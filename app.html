@@ -1,0 +1,1555 @@
+<title>Maison & Patrimoine</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Mise en page : barre latérale vert sapin + carnet clair ; sur mobile, barre d'onglets en bas. Charte V1.0, look clair assumé. */
+:root{
+  --sapin:#183C32; --profond:#285548; --sauge:#789486; --beige:#E9E1D2; --blanc:#FAF9F5;
+  --sable:#D8CCB8; --anthracite:#26302D; --rouge:#B85C52; --ocre:#C28A45;
+  --surface:#FFFFFF; --muted:#5E6A65; --soft:#F3EFE7; --line:#E6DED0;
+  --sauge-pale:#E4ECE7; --rouge-pale:#F6E5E2; --ocre-pale:#F7EBD9; --dep:#D9B486; --cred:#C9BCA6;
+  --on-sapin:#F4F1EA; --on-sapin-muted:#AFC2B8;
+  --f-titre:"Lora", Georgia, "Times New Roman", serif;
+  --f-corps:"Manrope", "Aptos", "Segoe UI", system-ui, sans-serif;
+  --r:12px; --r-sm:8px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--blanc);color:var(--anthracite);font-family:var(--f-corps);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1{font-family:var(--f-titre);font-weight:600;font-size:clamp(1.6rem,1.2rem + 1.4vw,2.1rem);color:var(--sapin);letter-spacing:-.01em}
+h2{font-size:1.05rem;font-weight:700;color:var(--sapin)}
+h3{font-size:.98rem;font-weight:700}
+p{margin:0}
+:focus-visible{outline:2px solid var(--ocre);outline-offset:2px;border-radius:4px}
+
+/* Structure */
+.app{display:grid;grid-template-columns:236px 1fr;min-height:100%}
+.side{background:var(--sapin);color:var(--on-sapin);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:22px 14px 16px;gap:20px}
+.brand{display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;padding:4px 0 10px;border-bottom:1px solid rgba(255,255,255,.1)}
+.brand svg{width:40px;height:40px}
+.brand b{font-family:var(--f-titre);font-weight:600;letter-spacing:.12em;font-size:.86rem;text-align:center;line-height:1.25}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:9px;text-decoration:none;color:var(--on-sapin-muted);font-weight:600;font-size:.93rem}
+.nav a:hover{background:rgba(255,255,255,.06);color:var(--on-sapin)}
+.nav a.on{background:var(--profond);color:#fff}
+.nav svg{width:19px;height:19px;flex:none}
+.nav .sep{height:1px;background:rgba(255,255,255,.1);margin:8px 6px}
+.side-foot{margin-top:auto;font-size:.8rem;color:var(--on-sapin-muted);display:flex;gap:10px;align-items:center;padding:10px 8px 0;border-top:1px solid rgba(255,255,255,.1)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--sauge);flex:none}
+.dot.warn{background:var(--ocre)} .dot.err{background:var(--rouge)}
+main{min-width:0;padding-block:28px 60px;padding-left:max(28px, env(safe-area-inset-left,0px));padding-right:max(28px, env(safe-area-inset-right,0px))}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.tabbar{display:none}
+
+/* En-têtes */
+.head{display:flex;gap:16px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
+.head .sub{color:var(--muted);margin-top:4px}
+.head-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.88rem;margin-bottom:6px}
+.back svg{width:16px;height:16px}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 16px;border-radius:10px;border:1px solid transparent;font-weight:700;font-size:.9rem;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn svg{width:17px;height:17px}
+.btn-p{background:var(--sapin);color:#fff}
+.btn-p:hover{background:var(--profond)}
+.btn-s{background:var(--surface);border-color:var(--sable);color:var(--sapin)}
+.btn-s:hover{background:var(--soft)}
+.btn-g{background:transparent;color:var(--sapin);padding:0 10px}
+.btn-g:hover{background:var(--soft)}
+.btn-d{background:var(--surface);border-color:#E2C3BE;color:var(--rouge)}
+.btn-sm{min-height:34px;padding:0 12px;font-size:.84rem;border-radius:8px}
+.link{background:none;border:0;padding:0;color:var(--profond);font-weight:700;cursor:pointer;text-decoration:none;font-size:.88rem;display:inline-flex;gap:4px;align-items:center}
+.link svg{width:15px;height:15px}
+.iconbtn{width:38px;height:38px;border-radius:9px;border:1px solid var(--line);background:var(--surface);display:inline-grid;place-items:center;cursor:pointer;color:var(--muted)}
+.iconbtn svg{width:17px;height:17px}
+
+/* Cartes */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;box-shadow:0 1px 2px rgba(38,48,45,.04);min-width:0}
+.card-h{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.card.soft{background:var(--soft);box-shadow:none}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.dash{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:18px;align-items:start}
+.col{display:flex;flex-direction:column;gap:18px;min-width:0}
+
+/* KPI */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.kpi .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;background:var(--sauge-pale);color:var(--sapin);flex:none}
+.kpi .ic svg{width:20px;height:20px}
+.kpi .ic.o{background:var(--ocre-pale);color:#8A5D26}
+.kpi .ic.r{background:var(--rouge-pale);color:var(--rouge)}
+.kpi .ic.n{background:var(--soft);color:var(--anthracite)}
+.kpi .lbl{font-size:.8rem;color:var(--muted);font-weight:600}
+.big{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;line-height:1.2;font-variant-numeric:tabular-nums;white-space:nowrap}
+.big .u{font-size:.95rem;font-weight:700;margin-left:3px;color:var(--muted)}
+.kpi .s{font-size:.78rem;color:var(--muted);margin-top:2px}
+.neg{color:var(--rouge)} .pos{color:var(--profond)}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;font-weight:700;padding:3px 9px;border-radius:999px;background:var(--soft);color:var(--anthracite);white-space:nowrap;line-height:1.4}
+.badge svg{width:12px;height:12px}
+.b-ok{background:var(--sauge-pale);color:var(--sapin)}
+.b-warn{background:var(--ocre-pale);color:#7E521E}
+.b-alert{background:var(--rouge-pale);color:#93443B}
+.b-info{background:#E8EEF0;color:#2F4A55}
+.b-res{background:var(--beige);color:var(--sapin)}
+
+/* Barres de progression */
+.bar{height:8px;background:var(--beige);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--profond);border-radius:99px}
+.bar.o i{background:var(--ocre)} .bar.r i{background:var(--rouge)}
+
+/* Biens */
+.illu{display:block;width:100%;aspect-ratio:16/9;max-width:100%;border-radius:10px;overflow:hidden;background:var(--beige)}
+.illu svg,.illu img{display:block;width:100%;height:100%;object-fit:cover}
+.biens{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px}
+.bien{display:flex;flex-direction:column;gap:12px;padding:12px 12px 16px}
+.bien .t{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.bien .addr{color:var(--muted);font-size:.82rem}
+.facts{display:flex;flex-direction:column;gap:6px;font-size:.86rem}
+.facts div{display:flex;align-items:center;gap:8px}
+.facts svg{width:15px;height:15px;color:var(--sauge);flex:none}
+.mini-biens{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.mini-bien{text-decoration:none;display:flex;flex-direction:column;gap:6px;min-width:0}
+.mini-bien b{font-size:.88rem}
+.mini-bien span{font-size:.78rem;color:var(--muted)}
+.mini-bien:hover b{text-decoration:underline}
+
+/* Listes */
+.list{display:flex;flex-direction:column}
+.li{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);min-width:0}
+.li:first-child{border-top:0}
+.li .ic{width:32px;height:32px;border-radius:8px;background:var(--soft);display:grid;place-items:center;color:var(--profond);flex:none}
+.li .ic svg{width:16px;height:16px}
+.li .ic.o{background:var(--ocre-pale);color:#8A5D26} .li .ic.r{background:var(--rouge-pale);color:var(--rouge)}
+.li .tx{flex:1;min-width:0}
+.li .tx b{display:block;font-size:.9rem;font-weight:600;overflow-wrap:anywhere}
+.li .tx span{display:block;font-size:.78rem;color:var(--muted)}
+.li .when{font-size:.8rem;font-weight:700;white-space:nowrap}
+.when.late{color:var(--rouge)} .when.soon{color:#9A6726} .when.calm{color:var(--muted)}
+.check{width:22px;height:22px;border-radius:6px;border:2px solid var(--sable);background:var(--surface);display:grid;place-items:center;cursor:pointer;flex:none;color:#fff;padding:0}
+.check svg{width:14px;height:14px}
+.check.on{background:var(--profond);border-color:var(--profond)}
+.done .tx b{text-decoration:line-through;color:var(--muted)}
+
+/* Opérations */
+.ops{display:flex;flex-direction:column}
+.op{display:grid;grid-template-columns:96px minmax(0,1.6fr) minmax(0,1fr) 108px 112px;gap:12px;align-items:center;padding:11px 8px;border-top:1px solid var(--line);cursor:pointer;border-radius:6px}
+.op:hover{background:var(--soft)}
+.op.hd{cursor:default;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;border-top:0;padding-top:0}
+.op.hd:hover{background:none}
+.op .d{font-size:.84rem;color:var(--muted)}
+.op .l b{display:block;font-weight:600;font-size:.9rem;overflow-wrap:anywhere}
+.op .l span{font-size:.78rem;color:var(--muted)}
+.op .w{font-size:.84rem;color:var(--muted);overflow-wrap:anywhere}
+.op .m{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.empty{padding:28px 12px;text-align:center;color:var(--muted);display:flex;flex-direction:column;gap:10px;align-items:center}
+
+/* Onglets & filtres */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;padding:10px 14px;font-weight:700;font-size:.88rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;margin-bottom:-1px}
+.tab.on{color:var(--sapin);border-color:var(--sapin)}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{border:1px solid var(--sable);background:var(--surface);padding:6px 13px;border-radius:999px;font-size:.84rem;font-weight:700;cursor:pointer;color:var(--muted)}
+.pill.on{background:var(--sapin);border-color:var(--sapin);color:#fff}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sel{min-height:40px;border:1px solid var(--sable);border-radius:9px;background:var(--surface);padding:0 12px;font-weight:600;font-size:.88rem}
+
+/* Graphiques */
+.chart{width:100%;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:520px;height:auto}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--muted);font-weight:600}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.donut-wrap{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center}
+.cat-l{display:flex;flex-direction:column;gap:7px;font-size:.84rem;min-width:0}
+.cat-l div{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center}
+.cat-l i{width:10px;height:10px;border-radius:3px}
+.cat-l .p{color:var(--muted);font-size:.78rem;min-width:36px;text-align:right}
+.hbars{display:flex;flex-direction:column;gap:10px;font-size:.85rem}
+.hbars .r{display:grid;grid-template-columns:130px 1fr 92px;gap:10px;align-items:center}
+.hbars .r span:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+
+/* Projets */
+.proj{display:flex;flex-direction:column;gap:12px;padding:12px 12px 16px}
+.proj-n{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:.8rem}
+.proj-n span{display:block;color:var(--muted)}
+.proj-n b{font-variant-numeric:tabular-nums}
+.prog{display:flex;align-items:center;gap:10px;font-size:.8rem;font-weight:700}
+.prog .bar{flex:1}
+.stat3{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.stat3>div{background:var(--soft);border-radius:10px;padding:12px 14px;min-width:0}
+.stat3 span{font-size:.76rem;color:var(--muted);font-weight:600;display:block}
+.stat3 b{font-size:1.15rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Détails */
+.info{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:.88rem}
+.info dt{color:var(--muted)} .info dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:18px}
+.months{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.month{border:1px solid var(--line);border-radius:9px;padding:8px;font-size:.78rem;display:flex;flex-direction:column;gap:4px;background:var(--surface);text-align:left;cursor:default}
+.month b{font-size:.82rem}
+.month.ok{background:var(--sauge-pale);border-color:transparent}
+.month.warn{background:var(--ocre-pale);border-color:transparent;cursor:pointer}
+.month.late{background:var(--rouge-pale);border-color:transparent;cursor:pointer}
+.scen{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.scen .card{display:flex;flex-direction:column;gap:10px}
+.scen .card.fav{border-color:var(--profond);box-shadow:0 0 0 1px var(--profond)}
+.note{background:var(--beige);border-radius:10px;padding:12px 14px;font-size:.88rem;display:flex;gap:10px;align-items:flex-start}
+.note svg{width:18px;height:18px;flex:none;color:var(--sapin);margin-top:2px}
+.note.ex{background:var(--sauge-pale)}
+
+/* Formulaires / modale */
+.modal-bg{position:fixed;inset:0;background:rgba(24,40,34,.42);display:grid;place-items:center;z-index:50;padding:16px;padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+.modal{background:var(--blanc);border-radius:16px;width:min(620px,100%);max-height:calc(100% - 20px);display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(24,40,34,.25)}
+.modal-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 22px;border-bottom:1px solid var(--line)}
+.modal-h h2{font-family:var(--f-titre);font-weight:600;font-size:1.3rem}
+.modal-b{padding:18px 22px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.modal-f{padding:14px 22px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.modal-f .left{margin-right:auto}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f label,.f .lab{font-weight:700;font-size:.84rem}
+.f .hint{font-size:.78rem;color:var(--muted)}
+.in{min-height:44px;border:1px solid var(--sable);border-radius:10px;background:var(--surface);padding:0 12px;width:100%}
+textarea.in{padding:10px 12px;min-height:80px;resize:vertical}
+.in:focus{border-color:var(--profond);outline:none;box-shadow:0 0 0 3px var(--sauge-pale)}
+.in-euro{position:relative}
+.in-euro .in{padding-right:34px;font-size:1.2rem;font-weight:800;font-variant-numeric:tabular-nums}
+.in-euro::after{content:"€";position:absolute;right:13px;top:50%;transform:translateY(-50%);font-weight:800;color:var(--muted)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.seg{display:flex;background:var(--soft);border-radius:10px;padding:3px;gap:3px;flex-wrap:wrap}
+.seg label{flex:1;text-align:center;padding:8px 10px;border-radius:8px;font-weight:700;font-size:.84rem;cursor:pointer;color:var(--muted);min-width:80px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--surface);color:var(--sapin);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips label{border:1px solid var(--sable);border-radius:999px;padding:6px 12px;font-size:.84rem;font-weight:600;cursor:pointer;background:var(--surface)}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label:has(input:checked){background:var(--sapin);border-color:var(--sapin);color:#fff}
+.chips label:has(input:focus-visible){outline:2px solid var(--ocre)}
+.rep{display:flex;flex-direction:column;gap:8px;background:var(--soft);border-radius:10px;padding:12px}
+.rep-row{display:grid;grid-template-columns:24px 1fr 90px 90px;gap:10px;align-items:center;font-size:.88rem}
+.rep-row input[type=number]{min-height:36px;text-align:right}
+.rep-row .amt{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.rep-sum{font-size:.82rem;font-weight:700;text-align:right}
+.err{color:var(--rouge);font-size:.82rem;font-weight:700}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.choice{display:flex;gap:12px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer;text-align:left}
+.choice:hover{border-color:var(--sauge)}
+.choice .ic{width:38px;height:38px;border-radius:10px;background:var(--sauge-pale);display:grid;place-items:center;color:var(--sapin);flex:none}
+.choice .ic svg{width:19px;height:19px}
+.choice b{display:block;font-size:.92rem}
+.choice span{font-size:.78rem;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--anthracite);color:#fff;padding:11px 18px;border-radius:10px;font-weight:600;font-size:.88rem;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.2);max-width:calc(100% - 32px)}
+.search{position:relative;flex:1;min-width:180px;max-width:320px}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--muted)}
+.search input{padding-left:36px;min-height:40px}
+.thumbs{display:flex;gap:10px;flex-wrap:wrap}
+.thumbs img{width:110px;height:80px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.doc-ic{width:34px;height:40px;border-radius:5px;background:var(--rouge-pale);color:var(--rouge);display:grid;place-items:center;font-size:.6rem;font-weight:800;flex:none}
+.doc-ic.w{background:#E5ECF2;color:#3D5A73}
+.doc-ic.i{background:var(--sauge-pale);color:var(--sapin)}
+.muted{color:var(--muted)}
+.small{font-size:.82rem}
+
+/* Fiscalité & connexion */
+.li.off{opacity:.55}
+.li .amt{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:.9rem}
+.li.total{border-top:2px solid var(--line);font-weight:800}
+.gated .side,.gated .tabbar{display:none!important}
+.gated .app{grid-template-columns:1fr}
+.gate{max-width:460px;width:100%;margin:8vh auto 0;display:flex;flex-direction:column;gap:18px}
+.gate .mark{width:56px;height:56px;border-radius:14px;background:var(--sapin);display:grid;place-items:center}
+.gate .mark svg{width:34px;height:34px}
+.fisc-cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.fisc-cmp>div{border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.fisc-cmp>div.best{border-color:var(--profond);background:var(--sauge-pale)}
+.fisc-cmp span{display:block;font-size:.78rem;color:var(--muted);font-weight:600}
+.fisc-cmp b{font-size:1.2rem;font-weight:800;font-variant-numeric:tabular-nums}
+@media (max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dash{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  main{padding-block:18px calc(96px + env(safe-area-inset-bottom,0px));padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+  .tabbar{display:grid;grid-template-columns:repeat(6,1fr);position:fixed;left:0;right:0;bottom:0;background:var(--sapin);z-index:40;padding:6px max(6px, env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px, env(safe-area-inset-left,0px))}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:7px 2px;color:var(--on-sapin-muted);text-decoration:none;font-size:.66rem;font-weight:700;border-radius:8px}
+  .tabbar a.on{color:#fff;background:var(--profond)}
+  .tabbar svg{width:20px;height:20px}
+  .g2,.g3,.split{grid-template-columns:1fr}
+  .mini-biens{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .op{grid-template-columns:minmax(0,1fr) auto;gap:2px 10px}
+  .op.hd{display:none}
+  .op .d{grid-column:1;grid-row:2;font-size:.76rem}
+  .op .l{grid-column:1;grid-row:1}
+  .op .w{display:none}
+  .op .s{grid-column:2;grid-row:2;justify-self:end}
+  .op .m{grid-column:2;grid-row:1}
+  .months{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .stat3{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hbars .r{grid-template-columns:96px 1fr 80px}
+}
+@media (max-width:520px){
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{flex-direction:column;gap:8px;padding:14px}
+  .big{font-size:1.25rem}
+  .g4,.row2,.choices{grid-template-columns:1fr}
+  .donut-wrap{grid-template-columns:1fr;justify-items:center}
+  .cat-l{width:100%}
+  .rep-row{grid-template-columns:24px 1fr 74px}
+  .rep-row .amt{display:none}
+  .modal-bg{padding:0;place-items:end stretch}
+  .modal{width:100%;border-radius:16px 16px 0 0;max-height:94%}
+  .modal-f{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  .head .btn-p{flex:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .modal{animation:up .18s ease-out}
+  @keyframes up{from{transform:translateY(12px);opacity:.6}to{transform:none;opacity:1}}
+}
+</style>
+
+<div class="app">
+  <aside class="side" aria-label="Navigation principale">
+    <a class="brand" href="#accueil" id="brand"></a>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot" id="savestate"><span class="dot"></span><span>Chargement…</span></div>
+  </aside>
+  <main id="main"><div class="wrap"><p class="muted">Chargement de votre patrimoine…</p></div></main>
+</div>
+<nav class="tabbar" id="tabbar" aria-label="Navigation"></nav>
+<div id="modal-root"></div>
+
+<script>
+"use strict";
+/* ---------- Icônes (style linéaire) ---------- */
+const P = {
+  home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/><path d="M10 20v-5h4v5"/>',
+  homes:'<path d="M2 11 8 6l6 5"/><path d="M4 10v9h8v-9"/><path d="M14 8l4-3 4 3.5V19h-6"/><path d="M7 19v-3h2v3"/>',
+  wallet:'<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M16 14.5h2"/><path d="M6 6V5a2 2 0 0 1 2-2h8"/>',
+  tools:'<path d="M14.7 6.3a4 4 0 0 0 5 5L12 19a2.1 2.1 0 0 1-3-3z"/><path d="m5 3 4 4-2 2-4-4"/>',
+  file:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>',
+  check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  checksq:'<rect x="3" y="3" width="18" height="18" rx="3"/><path d="m8 12 3 3 5-6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  more:'<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  back:'<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  in:'<path d="M12 19V5M6 11l6-6 6 6"/>',
+  out:'<path d="M12 5v14M6 13l6 6 6-6"/>',
+  bank:'<path d="M3 10 12 4l9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/>',
+  scale:'<path d="M12 4v16M5 20h14"/><path d="M5 8h14"/><path d="m5 8-3 6h6zM19 8l-3 6h6z"/>',
+  key:'<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9M17 6l3 3M15 8l2 2"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/>',
+  ruler:'<path d="M3 17 17 3l4 4L7 21z"/><path d="m7 13 2 2M10 10l2 2M13 7l2 2"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  alert:'<path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  euro:'<path d="M17 6.5A7 7 0 1 0 17 17.5"/><path d="M4 10h9M4 14h9"/>',
+  edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13 7 4 4"/>',
+  trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+  x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+  upload:'<path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v4h16v-4"/>',
+  idea:'<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/>',
+  store:'<path d="M3 9 5 4h14l2 5"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v7h14v-7"/>',
+  star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/>',
+  people:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-3.5 3.5-5 6.5-5s5.5 1.5 6.5 5"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.5 0 4 1.5 4.5 4"/>',
+  history:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/>',
+  dot:'<circle cx="12" cy="12" r="4"/>',
+  receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+  logout:'<path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4M6 12h10"/>',
+};
+const ic = (n, cls='') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]||''}</svg>`;
+
+/* ---------- Illustrations des biens ---------- */
+function illu(kind){
+  const sky='#E9E1D2', grass='#B9C7BE', grass2='#9FB3A6', wall='#F4EEE2', wall2='#E7DCC9', roof='#183C32', roof2='#285548', win='#789486', door='#6B4E33', tree='#5E7F6E';
+  const ground=`<rect y="128" width="320" height="52" fill="${grass}"/><path d="M0 140c60-8 120-6 180-2s100 2 140-4V180H0z" fill="${grass2}"/>`;
+  const trees=`<circle cx="36" cy="104" r="22" fill="${tree}"/><rect x="34" y="112" width="4" height="22" fill="${door}"/><circle cx="292" cy="110" r="16" fill="${tree}" opacity=".85"/>`;
+  let h='';
+  if(kind==='maison') h=`<rect x="200" y="44" width="12" height="26" fill="${roof2}"/><path d="M84 82 160 36l76 46z" fill="${roof}"/><rect x="96" y="80" width="128" height="58" fill="${wall}"/><rect x="108" y="92" width="18" height="16" fill="${win}"/><rect x="194" y="92" width="18" height="16" fill="${win}"/><rect x="151" y="106" width="18" height="32" fill="${door}"/><rect x="108" y="116" width="18" height="14" fill="${win}"/><rect x="194" y="116" width="18" height="14" fill="${win}"/>`;
+  else if(kind==='plainpied') h=`<path d="M62 96 112 66h108l46 30z" fill="${roof}"/><rect x="74" y="94" width="180" height="44" fill="${wall}"/><rect x="88" y="104" width="22" height="16" fill="${win}"/><rect x="122" y="104" width="22" height="16" fill="${win}"/><rect x="196" y="104" width="34" height="20" fill="${win}"/><rect x="158" y="106" width="18" height="32" fill="${door}"/><rect x="74" y="134" width="180" height="4" fill="${wall2}"/>`;
+  else if(kind==='local') h=`<rect x="80" y="54" width="160" height="84" fill="${wall2}"/><rect x="80" y="48" width="160" height="10" fill="${roof}"/><rect x="96" y="64" width="128" height="12" fill="${roof2}"/><path d="M88 84h144l-8 12H96z" fill="${roof}"/><rect x="98" y="96" width="70" height="42" fill="${win}" opacity=".9"/><rect x="178" y="96" width="44" height="42" fill="${door}"/><rect x="104" y="102" width="58" height="2" fill="#fff" opacity=".5"/>`;
+  else h=`<path d="M100 88 150 58l50 30z" fill="${roof}"/><rect x="110" y="86" width="80" height="52" fill="${wall}"/><rect x="122" y="98" width="20" height="18" fill="${win}"/><rect x="156" y="104" width="18" height="34" fill="${door}"/><path d="M190 100h44v38h-44z" fill="${wall2}"/><path d="M186 100 212 84l26 16z" fill="${roof2}"/>`;
+  return `<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Illustration du bien"><rect width="320" height="180" fill="${sky}"/><circle cx="262" cy="40" r="14" fill="#F2E7CF"/>${ground}${trees}${h}</svg>`;
+}
+const logo = `<svg viewBox="0 0 48 48" fill="none" stroke="#F4F1EA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22 24 7l18 15"/><path d="M11 18v22h26V18"/><path d="M20 40V28h8v12"/><path d="M24 7v6"/></svg>`;
+
+/* ---------- Constantes ---------- */
+const CATS_DEP = ['Travaux','Énergie','Assurances','Taxes','Entretien','Charges','Frais bancaires','Autres'];
+const CATS_REV = ['Loyer','Charges récupérées','Autres revenus'];
+const DOC_CATS = ['Contrat','Juridique','Taxes','Énergie','Travaux','Diagnostic','Assurance','Autre'];
+const CAT_COL = {'Travaux':'#183C32','Taxes':'#C28A45','Assurances':'#789486','Énergie':'#D9B486','Entretien':'#8C6A4A','Charges':'#A9B8AF','Frais bancaires':'#5E6A65','Autres':'#D8CCB8'};
+const STATUTS_BIEN = {residence:['Résidence','b-res','home'], loue:['Loué','b-ok','key'], vacant:['Vacant','b-warn','alert'], projet:['En projet','b-info','idea']};
+const TYPES_BIEN = {maison:'Maison', plainpied:'Maison plain-pied', studio:'Studio / appartement', local:'Local commercial'};
+const MOIS = ['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const MOIS_L = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const LS = 'maison-patrimoine-v1';
+// Fiscalité (location nue, règles en vigueur pour les revenus 2025-2026)
+const DEDUCT_DEFAULT = {'Travaux':true,'Entretien':true,'Assurances':true,'Taxes':true,'Charges':true,'Frais bancaires':false,'Énergie':false,'Autres':false};
+const MICRO_SEUIL = 15000, MICRO_ABATT = 0.30, PRELEV_SOCIAUX = 0.172, DEFICIT_PLAF = 10700, FRAIS_GESTION = 20;
+const TMIS = [0, 11, 30, 41, 45];
+
+/* ---------- Outils ---------- */
+const pad = n => String(n).padStart(2,'0');
+const todayISO = () => { const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); };
+const TODAY = todayISO();
+const CUR_YM = TODAY.slice(0,7);
+const uid = p => p + Math.random().toString(36).slice(2,8);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf0 = new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0});
+const nf2 = new Intl.NumberFormat('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const eur = (n, dec) => { n = Math.round((Number(n)||0)*100)/100; const s = (dec || (dec===undefined && Math.round(n)!==n)) ? nf2.format(Math.abs(n)) : nf0.format(Math.abs(Math.round(n))); return (n<0?'− ':'')+s+' €'; };
+const eurBig = (n, sign) => { n=Math.round(Number(n)||0); const s=(n<0?'− ':(sign&&n>0?'+ ':''))+nf0.format(Math.abs(n)); return `${s}<span class="u">€</span>`; };
+const dFR = iso => { if(!iso) return '—'; const [y,m,d]=iso.split('-').map(Number); return d ? `${d} ${MOIS[m-1]} ${y}` : `${MOIS_L[m-1]} ${y}`; };
+const dShort = iso => { const [y,m,d]=iso.split('-').map(Number); return `${pad(d)}/${pad(m)}/${y}`; };
+const days = iso => Math.round((Date.parse(iso+'T12:00') - Date.parse(TODAY+'T12:00'))/864e5);
+function rel(iso){ const n=days(iso); if(n<0) return ['En retard de '+(-n)+' j','late']; if(n===0) return ["Aujourd'hui",'soon']; if(n===1) return ['Demain','soon']; if(n<=14) return ['Dans '+n+' jours','soon']; if(n<=60) return ['Dans '+Math.round(n/7)+' semaines','calm']; return [dFR(iso),'calm']; }
+const ymAdd = (ym, k) => { let [y,m]=ym.split('-').map(Number); m+=k; while(m>12){m-=12;y++} while(m<1){m+=12;y--} return y+'-'+pad(m); };
+const sum = (a, f) => a.reduce((s,x)=>s+(f?f(x):x),0);
+const fileSize = b => !b ? '' : b<1024*1024 ? Math.max(1,Math.round(b/1024))+' Ko' : (b/1048576).toFixed(1).replace('.',',')+' Mo';
+
+/* ---------- Données d'exemple ---------- */
+function seed(){
+  const biens = [
+    {id:'b1', nom:'Maison familiale', type:'maison', statut:'residence', adresse:'182 rue Nationale, 03290 Dompierre-sur-Besbre', surface:120, locataire:'', loyer:0, jourLoyer:5, finBail:'', notes:'Résidence principale de la famille.', historique:[]},
+    {id:'b2', nom:'Maison plain-pied', type:'plainpied', statut:'loue', adresse:'182 rue Nationale, 03290 Dompierre-sur-Besbre', surface:78, locataire:'Mme X.', loyer:620, jourLoyer:5, finBail:'2028-08-31', notes:'Bail de 3 ans renouvelé en 2025.', historique:[{date:'2025-09-01',texte:'Bail renouvelé pour 3 ans'}]},
+    {id:'b3', nom:'Studio', type:'studio', statut:'loue', adresse:'182 rue Nationale (annexe), 03290 Dompierre-sur-Besbre', surface:32, locataire:'M. Y.', loyer:450, jourLoyer:30, finBail:'2027-08-31', notes:'Loyer versé en fin de mois.', historique:[],
+      plan:{titre:"Récupérer l'annexe pour agrandir la maison familiale", horizon:'Septembre 2027', conditions:'Fin du bail le 31 août 2027. Congé à donner au moins 3 mois avant, par lettre recommandée.', budget:15000, etapes:[
+        {id:'e1', titre:'Vérifier la date de fin du bail', fait:true},
+        {id:'e2', titre:"Faire chiffrer l'ouverture du mur entre les deux parties", fait:false},
+        {id:'e3', titre:'Envoyer le congé au locataire (avant le 31 mai 2027)', fait:false},
+        {id:'e4', titre:"Travaux d'intégration à la maison", fait:false},
+        {id:'e5', titre:'Aménager et meubler la nouvelle pièce', fait:false}]}},
+    {id:'b4', nom:'Local commercial', type:'local', statut:'loue', adresse:'Place du Marché, 03290 Dompierre-sur-Besbre', surface:95, locataire:'Boulangerie (bail commercial)', loyer:1380, jourLoyer:5, finBail:'2027-06-30', notes:'Bail 3-6-9. Prochaine échéance triennale en juin 2027.', historique:[],
+      scenarios:[
+        {id:'s1', titre:'Relouer en commerce', revenu:16560, cout:2000, delai:'2 à 4 mois', notes:'Garder la vocation commerciale. Rafraîchir la vitrine.', favori:true},
+        {id:'s2', titre:'Transformer en logement', revenu:9600, cout:45000, delai:'10 à 14 mois', notes:'Demande de changement de destination en mairie.', favori:false},
+        {id:'s3', titre:'Vendre', revenu:0, cout:0, delai:'6 mois', notes:'Prix estimé autour de 140 000 € (à faire confirmer).', favori:false},
+        {id:'s4', titre:'Usage familial (atelier, bureau)', revenu:0, cout:8000, delai:'3 mois', notes:'Perte du loyer, mais un espace utile pour la famille.', favori:false}]},
+  ];
+  const ops=[]; let n=0;
+  const add=(type,date,montant,categorie,libelle,parts,x={})=>{
+    const repart = parts==='global' ? {mode:'global',parts:[]} : {mode:Object.keys(parts).length>1?'plusieurs':'un', parts:Object.entries(parts).map(([id,part])=>({id,part}))};
+    ops.push(Object.assign({id:'o'+(++n), type, date, montant, categorie, libelle, repart, fournisseur:'', statut:'paye', justif:null, note:'', projetId:''}, x));
+  };
+  for(let m=1;m<=10;m++){
+    for(const b of biens.filter(b=>b.statut==='loue')){
+      const date=`2026-${pad(m)}-${pad(Math.min(b.jourLoyer,28))}`;
+      const due = m===10 && b.id==='b3' ? '2026-10-30' : date;
+      add('revenu', due, b.loyer, 'Loyer', 'Loyer '+MOIS_L[m-1], {[b.id]:100}, {fournisseur:b.locataire, statut:(m===10&&b.id==='b3')?'a_payer':'paye'});
+    }
+  }
+  add('depense','2026-01-12',142,'Énergie','Facture électricité',{b1:100},{fournisseur:'EDF'});
+  add('depense','2026-01-20',960,'Assurances','Assurance propriétaire non occupant',{b2:30,b3:20,b4:50},{fournisseur:'MAIF'});
+  add('depense','2026-02-09',120,'Entretien','Entretien chaudière',{b2:100},{fournisseur:'Chauffage Moulinois'});
+  add('depense','2026-02-14',138,'Énergie','Facture électricité',{b1:100},{fournisseur:'EDF'});
+  add('depense','2026-03-03',85,'Entretien','Remplacement robinet cuisine',{b3:100},{fournisseur:'Plomberie Durand'});
+  add('depense','2026-03-15',120,'Énergie','Facture électricité',{b1:100},{fournisseur:'EDF'});
+  add('depense','2026-04-18',8400,'Travaux','Réfection de la toiture',{b1:40,b2:30,b3:30},{fournisseur:'Couverture Besbre',projetId:'p2',note:'Facture finale réglée en une fois.'});
+  add('depense','2026-05-06',450,'Travaux','Peinture du salon',{b2:100},{fournisseur:'Déco Peinture'});
+  add('depense','2026-05-22',1440,'Travaux','Gouttières et descentes',{b1:40,b2:30,b3:30},{fournisseur:'Couverture Besbre',projetId:'p2'});
+  add('depense','2026-06-02',60,'Frais bancaires','Frais de tenue de compte',  'global',{fournisseur:'Banque'});
+  add('depense','2026-06-10',2400,'Travaux','Mise aux normes électriques',{b3:100},{fournisseur:'Élec Services',projetId:'p1'});
+  add('depense','2026-07-08',220,'Entretien','Taille des haies et jardin',{b1:100},{fournisseur:'Jardins du Bourbonnais'});
+  add('depense','2026-07-22',1765,'Travaux',"Carrelage salle d'eau",{b3:100},{fournisseur:'Carrelage Allier',projetId:'p1'});
+  add('depense','2026-08-19',1300,'Travaux','Acompte isolation des combles',{b1:100},{fournisseur:'Isol Confort',projetId:'p3'});
+  add('depense','2026-09-21',2160,'Taxes','Taxe foncière 2026',{b1:35,b2:25,b3:15,b4:25},{fournisseur:'Trésor public',teom:186,note:"Avis 2026 : 2 160 € dont 186 € de taxe d'ordures ménagères."});
+  add('depense','2026-10-07',84.2,'Énergie','Facture électricité',{b2:100},{fournisseur:'EDF',note:'Logement vacant 3 jours pendant les travaux.'});
+  add('depense','2026-10-11',120,'Entretien','Entretien chaudière',{b1:100},{fournisseur:'Chauffage Moulinois'});
+  add('depense','2026-10-16',635.8,'Travaux','Matériaux cuisine studio',{b3:100},{fournisseur:'Brico Moulins',projetId:'p1'});
+  add('depense','2026-10-29',180,'Entretien','Facture plombier (fuite)',{b3:100},{fournisseur:'Plomberie Durand',statut:'a_payer'});
+  add('depense','2026-11-20',2400,'Travaux','Menuiseries du studio',{b3:100},{fournisseur:'Menuiserie Bernard',projetId:'p1',statut:'prevu'});
+  add('depense','2027-02-15',5200,'Travaux','Isolation des combles (solde)',{b1:100},{fournisseur:'Isol Confort',projetId:'p3',statut:'prevu'});
+  return {
+    version:1, exemple:true, biens, operations:ops,
+    projets:[
+      {id:'p1', nom:'Rénovation du studio', biens:['b3'], budget:15000, progression:45, statut:'en_cours', debut:'2026-06-01', finPrevue:'2027-01-31', finReelle:'', fournisseurs:['Élec Services','Carrelage Allier','Menuiserie Bernard'], description:"Remettre le studio à neuf avant la récupération de l'annexe prévue en 2027.", actions:[{id:'a1',titre:'Relancer le menuisier pour la date de pose',fait:false},{id:'a2',titre:'Choisir la crédence de la cuisine',fait:false},{id:'a3',titre:'Valider le devis carrelage',fait:true}], photos:[]},
+      {id:'p2', nom:'Rénovation extérieure', biens:['b1','b2','b3'], budget:12000, progression:82, statut:'en_cours', debut:'2026-03-15', finPrevue:'2026-12-15', finReelle:'', fournisseurs:['Couverture Besbre'], description:'Toiture, gouttières et façade côté rue.', actions:[{id:'a4',titre:'Demander le devis du ravalement de façade',fait:false}], photos:[]},
+      {id:'p3', nom:'Isolation des combles', biens:['b1'], budget:6500, progression:20, statut:'a_venir', debut:'2027-02-01', finPrevue:'2027-02-28', finReelle:'', fournisseurs:['Isol Confort'], description:'Isolation en laine de bois. Vérifier les aides possibles avant le solde.', actions:[{id:'a5',titre:'Se renseigner sur les aides à la rénovation',fait:false}], photos:[]},
+    ],
+    prets:[
+      {id:'l1', nom:'Prêt immobilier', type:'immobilier', banque:'Crédit Agricole', montant:320000, mensualite:890, taux:3.2, debut:'2021-03', fin:'2039-02', restant:245000, jour:5},
+      {id:'l2', nom:'Prêt travaux', type:'travaux', banque:'Crédit Agricole', montant:80000, mensualite:650, taux:2.9, debut:'2024-05', fin:'2032-04', restant:68400, utilise:45600, jour:5},
+    ],
+    taches:[
+      {id:'t1', titre:"Renouveler l'assurance de la maison", echeance:'2026-11-09', priorite:'haute', bienId:'b1', type:'tache', fait:false},
+      {id:'t2', titre:'Demander un devis pour la toiture du garage', echeance:'2026-11-04', priorite:'normale', bienId:'b1', type:'tache', fait:false},
+      {id:'t3', titre:'Régulariser les charges du plain-pied', echeance:'2026-12-15', priorite:'normale', bienId:'b2', type:'tache', fait:false},
+      {id:'t4', titre:'Envoyer les quittances de septembre', echeance:'2026-10-05', priorite:'normale', bienId:'', type:'tache', fait:true},
+      {id:'t5', titre:'Réfléchir au devenir du local commercial', echeance:'2027-03-31', priorite:'normale', bienId:'b4', type:'decision', fait:false},
+      {id:'t6', titre:'Décider de la récupération du studio', echeance:'2027-05-31', priorite:'haute', bienId:'b3', type:'decision', fait:false},
+    ],
+    documents:[
+      {id:'d1', nom:'Acte de propriété', categorie:'Juridique', bienId:'b1', date:'2021-01-13', taille:2516582, url:null, ext:'pdf'},
+      {id:'d2', nom:'Avis de taxe foncière 2026', categorie:'Taxes', bienId:'', date:'2026-09-05', taille:1153434, url:null, ext:'pdf'},
+      {id:'d3', nom:'Facture électricité octobre', categorie:'Énergie', bienId:'b2', date:'2026-10-07', taille:838860, url:null, ext:'pdf'},
+      {id:'d4', nom:'Devis toiture', categorie:'Travaux', bienId:'b1', date:'2026-02-01', taille:1572864, url:null, ext:'pdf'},
+      {id:'d5', nom:'Diagnostic de performance énergétique', categorie:'Diagnostic', bienId:'b3', date:'2023-03-15', taille:1258291, url:null, ext:'pdf'},
+      {id:'d6', nom:'Bail commercial', categorie:'Contrat', bienId:'b4', date:'2018-06-18', taille:2202009, url:null, ext:'pdf'},
+      {id:'d7', nom:'Bail plain-pied', categorie:'Contrat', bienId:'b2', date:'2025-09-01', taille:943718, url:null, ext:'pdf'},
+      {id:'d8', nom:'Attestation assurance propriétaire', categorie:'Assurance', bienId:'', date:'2026-01-20', taille:412000, url:null, ext:'pdf'},
+    ],
+    fiscal:{tmi:30, interets:{'2026':1980}, departement:'03'},
+    maj:null
+  };
+}
+
+/* ---------- État & sauvegarde ---------- */
+const CFG = window.MP_CONFIG || null;
+const SB = (CFG && CFG.supabaseUrl && CFG.supabaseKey && window.supabase) ? window.supabase.createClient(CFG.supabaseUrl, CFG.supabaseKey) : null;
+let SBUSER = null, sbVersion = 0; const signed = {};
+let S = null;
+const UI = { bienTab:'apercu', finYear:null, finMonth:'all', finBien:'all', finTab:'global', travFilter:'all', docBien:'all', docQ:'', showDone:false, fiscYear:null };
+const caps = { artifact:null, assets:null, ready:null, readOnly:false };
+let saveTimer=null, saveState='idle';
+
+caps.ready = (async () => {
+  try{
+    if(SB || !window.claude || typeof window.claude.use!=='function') return;
+    const [a, s] = await Promise.all([window.claude.use('artifact').catch(()=>null), window.claude.use('assets').catch(()=>null)]);
+    caps.artifact=a; caps.assets=s;
+  }catch(e){}
+  finally{ paintSave(); }
+})();
+
+function paintSave(){
+  const el=document.getElementById('savestate'); if(!el) return;
+  const m = {
+    idle:[(caps.artifact||SB)?'':'warn', (caps.artifact||SB)?'Tout est enregistré':'Enregistré sur cet appareil'],
+    pending:['warn','Enregistrement…'],
+    ok:['','Tout est enregistré'],
+    local:['warn','Enregistré sur cet appareil'],
+    readonly:['warn','Consultation seule'],
+    conflict:['warn','Mise à jour reçue, rechargement…'],
+    error:['err',"Échec de l'enregistrement, réessayez"],
+  }[saveState] || ['', ''];
+  el.innerHTML=`<span class="dot ${m[0]}"></span><span>${m[1]}</span>`;
+}
+function setSave(s){ saveState=s; paintSave(); }
+function save(){
+  S.maj=new Date().toISOString();
+  if(S.exemple===true) S.exemple='modifie';
+  setSave('pending');
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(doSave,1200);
+}
+async function doSave(){
+  if(SB) return sbSave();
+  const json=JSON.stringify(S);
+  try{ localStorage.setItem(LS,json); }catch(e){}
+  await caps.ready;
+  if(caps.artifact && !caps.readOnly){
+    try{
+      await caps.artifact.publish({'data/state.json':{content:json, contentType:'application/json'}});
+      setSave('ok'); return;
+    }catch(e){
+      const c=e&&e.code;
+      if(c==='not_writer'||c==='not_granted'||c==='consent_required'||c==='not_declared'){ caps.readOnly=true; setSave('readonly'); toast('Vous consultez ce carnet en lecture seule : vos changements ne sont pas enregistrés.'); return; }
+      if(c==='conflict'){ setSave('conflict'); return; }
+      if(c==='rate_limited'){ saveTimer=setTimeout(doSave,8000); return; }
+      if(c==='capability_disabled'||c==='capability_removed'){ caps.artifact=null; setSave('local'); return; }
+      if(c==='upstream_error'){ saveTimer=setTimeout(doSave,2500+Math.random()*2000); setSave('pending'); return; }
+      setSave('error'); return;
+    }
+  }
+  setSave('local');
+}
+
+async function load(){
+  if(SB) return sbLoad();
+  let st=null;
+  try{ const r=await fetch('data/state.json',{cache:'no-store'}); if(r.ok){ const j=await r.json(); if(j && Array.isArray(j.biens)) st=j; } }catch(e){}
+  if(!st){ try{ const raw=localStorage.getItem(LS); if(raw){ const j=JSON.parse(raw); if(j&&Array.isArray(j.biens)) st=j; } }catch(e){} }
+  S = st || seed();
+  ensureFiscal(); ensureRents();
+}
+function ensureFiscal(){
+  if(!S.fiscal) S.fiscal={tmi:null, interets:{}, departement:''};
+  if(!S.fiscal.interets) S.fiscal.interets={};
+  if(!S.fiscal.departement){ const m=(S.biens[0]?.adresse||'').match(/\b(\d{2})\d{3}\b/); if(m) S.fiscal.departement=m[1]; }
+}
+
+/* ---------- Supabase (version Vercel) ---------- */
+async function sbLoad(){
+  const {data:{session}} = await SB.auth.getSession();
+  if(!session){ showGate('login'); return false; }
+  SBUSER = session.user.email;
+  const mem = await SB.from('membres').select('email').limit(1);
+  if(mem.error){ showGate('error', mem.error.message); return false; }
+  if(!mem.data.length){ showGate('denied'); return false; }
+  const r = await SB.from('carnet').select('data,version').eq('id',1).maybeSingle();
+  if(r.error){ showGate('error', r.error.message); return false; }
+  if(r.data){ S=r.data.data; sbVersion=r.data.version; }
+  else {
+    S=seed();
+    const ins=await SB.from('carnet').insert({id:1, data:S, version:1});
+    if(ins.error){ showGate('error', ins.error.message); return false; }
+    sbVersion=1;
+  }
+  ensureFiscal(); ensureRents(); return true;
+}
+async function sbSave(){
+  const next=sbVersion+1;
+  const {data,error}=await SB.from('carnet').update({data:S, version:next}).eq('id',1).eq('version',sbVersion).select('version');
+  if(error){
+    if(/jwt|auth|token/i.test(error.message||'')){ setSave('error'); toast('Votre session a expiré : reconnectez-vous, puis refaites votre dernier changement.'); showGate('login'); return; }
+    setSave('error'); saveTimer=setTimeout(doSave,5000); return;
+  }
+  if(!data || !data.length){
+    const r=await SB.from('carnet').select('data,version').eq('id',1).maybeSingle();
+    if(r.data){ S=r.data.data; sbVersion=r.data.version; ensureFiscal(); render(); }
+    setSave('ok'); toast("Quelqu'un a modifié le carnet en même temps que vous. La version la plus récente est affichée : refaites votre dernier changement.");
+    return;
+  }
+  sbVersion=data[0].version; setSave('ok');
+}
+async function sbRefresh(){
+  if(!SB || !S || saveState==='pending' || document.getElementById('mform')) return;
+  const r=await SB.from('carnet').select('data,version').eq('id',1).maybeSingle();
+  if(r.data && r.data.version>sbVersion && saveState!=='pending' && !document.getElementById('mform')){
+    S=r.data.data; sbVersion=r.data.version; ensureFiscal(); render(); toast('Le carnet a été mis à jour avec les derniers changements.');
+  }
+}
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) sbRefresh().catch(()=>{}); });
+async function hydrate(){
+  if(!SB) return;
+  const els=[...document.querySelectorAll('[data-sb-src],[data-sb-href]')];
+  const need=[...new Set(els.map(e=>e.dataset.sbSrc||e.dataset.sbHref))].filter(p=>!signed[p]);
+  if(need.length){
+    try{ const {data}=await SB.storage.from('justificatifs').createSignedUrls(need, 3600); (data||[]).forEach(d=>{ if(d.signedUrl) signed[d.path]=d.signedUrl; }); setTimeout(()=>need.forEach(p=>delete signed[p]), 50*60*1000); }catch(e){}
+  }
+  els.forEach(e=>{ const p=e.dataset.sbSrc||e.dataset.sbHref; const u=signed[p]; if(!u) return; if(e.dataset.sbSrc) e.src=u; else e.href=u; });
+}
+function showGate(kind, msg){
+  document.body.classList.add('gated');
+  const mark=`<span class="mark">${logo}</span>`;
+  let h='';
+  if(kind==='login') h=`${mark}<div><h1>Maison &amp; Patrimoine</h1><p class="sub muted" style="margin-top:6px">Saisissez votre adresse e-mail. Vous recevrez un lien pour ouvrir le carnet, sans mot de passe.</p></div>
+    <form id="login-form" class="card" style="display:flex;flex-direction:column;gap:14px" novalidate><div class="f"><label for="login-email">Adresse e-mail</label><input class="in" id="login-email" name="email" type="email" autocomplete="email" required placeholder="prenom@exemple.fr"></div><p class="err" id="login-err" hidden></p><button class="btn btn-p" type="submit">Recevoir le lien de connexion</button></form>`;
+  else if(kind==='sent') h=`${mark}<div><h1>Regardez vos e-mails</h1><p class="sub" style="margin-top:6px">Un lien de connexion vient d'être envoyé à <b>${esc(msg)}</b>. Ouvrez-le sur cet appareil : le carnet s'ouvrira tout seul.</p></div><p class="small muted">Rien reçu après quelques minutes ? Regardez dans les courriers indésirables, ou <button class="link" data-a="reload">recommencez</button>.</p>`;
+  else if(kind==='denied') h=`${mark}<div><h1>Accès non autorisé</h1><p class="sub" style="margin-top:6px">L'adresse <b>${esc(SBUSER||'')}</b> n'a pas encore accès à ce carnet. Demandez à la personne qui le gère de l'ajouter à la liste des membres.</p></div><div><button class="btn btn-s" data-a="logout">${ic('logout')}Utiliser une autre adresse</button></div>`;
+  else h=`${mark}<div><h1>Connexion impossible</h1><p class="sub" style="margin-top:6px">La base de données ne répond pas comme prévu. Vérifiez votre connexion internet puis réessayez.</p>${msg?`<p class="small muted" style="margin-top:8px">Détail technique : ${esc(msg)}</p>`:''}</div><div><button class="btn btn-p" data-a="reload">Réessayer</button></div>`;
+  document.getElementById('main').innerHTML=`<div class="gate">${h}</div>`;
+  if(kind==='login') document.getElementById('login-email')?.focus();
+}
+async function sbLogin(f){
+  const email=val(f,'email'); const err=document.getElementById('login-err');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ err.textContent='Vérifiez l\'adresse e-mail : elle doit ressembler à prenom@exemple.fr.'; err.hidden=false; return; }
+  const btn=f.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Envoi…';
+  const {error}=await SB.auth.signInWithOtp({email, options:{emailRedirectTo: location.origin+location.pathname}});
+  if(error){ btn.disabled=false; btn.textContent='Recevoir le lien de connexion'; err.textContent=/rate|seconds|limit/i.test(error.message)?'Trop de demandes rapprochées : patientez une minute, puis réessayez.':'Le lien n\'a pas pu être envoyé. Réessayez dans un instant.'; err.hidden=false; return; }
+  showGate('sent', email);
+}
+function ensureRents(){
+  // Crée le loyer attendu du mois en cours pour chaque bien loué (statut « À recevoir »).
+  let changed=false;
+  for(const b of S.biens){
+    if(b.statut!=='loue' || !(b.loyer>0)) continue;
+    const has=S.operations.some(o=>o.type==='revenu'&&o.categorie==='Loyer'&&o.date.slice(0,7)===CUR_YM&&o.repart.parts.some(p=>p.id===b.id));
+    if(!has){
+      const [y,m]=CUR_YM.split('-').map(Number);
+      const last=new Date(y,m,0).getDate();
+      S.operations.push({id:uid('o'),type:'revenu',date:`${CUR_YM}-${pad(Math.min(b.jourLoyer||5,last))}`,montant:b.loyer,categorie:'Loyer',libelle:'Loyer '+MOIS_L[m-1],repart:{mode:'un',parts:[{id:b.id,part:100}]},fournisseur:b.locataire||'',statut:'a_payer',justif:null,note:'',projetId:''});
+      changed=true;
+    }
+  }
+  if(changed && S.maj) save();
+}
+
+/* ---------- Calculs ---------- */
+const bien = id => S.biens.find(b=>b.id===id);
+const bienNom = id => id==='commun' ? 'Patrimoine global' : (bien(id)?.nom || 'Bien supprimé');
+const parts = o => o.repart.mode==='global' ? [{id:'commun',part:100}] : o.repart.parts;
+const partFor = (o, id) => { if(id==='all') return o.montant; const p=parts(o).find(p=>p.id===id); return p ? o.montant*p.part/100 : 0; };
+const opBiensLabel = o => o.repart.mode==='global' ? 'Patrimoine global' : o.repart.parts.map(p=>bienNom(p.id)+(o.repart.parts.length>1?` (${nf0.format(p.part)} %)`:'')).join(' + ');
+const statusLbl = (o) => o.statut==='paye' ? (o.type==='revenu'?['Reçu','b-ok','check']:['Payé','b-ok','check']) : o.statut==='a_payer' ? (o.type==='revenu'?['À recevoir','b-warn','clock']:['À payer','b-warn','clock']) : ['Prévu','b-info','cal'];
+const badge = ([t,c,i]) => `<span class="badge ${c}">${ic(i)}${esc(t)}</span>`;
+const bienBadge = b => badge(STATUTS_BIEN[b.statut]||STATUTS_BIEN.vacant);
+function loanActive(l, ym){ return l.debut<=ym && ym<=l.fin; }
+function credits(ym){ return sum(S.prets.filter(l=>loanActive(l,ym)), l=>l.mensualite); }
+function opsIn(filter){ return S.operations.filter(filter); }
+function monthTotals(ym, bienId='all'){
+  const inM = o => o.date.slice(0,7)===ym && o.statut!=='prevu';
+  const rev = sum(opsIn(o=>o.type==='revenu'&&inM(o)), o=>partFor(o,bienId));
+  const dep = sum(opsIn(o=>o.type==='depense'&&inM(o)), o=>partFor(o,bienId));
+  const cred = bienId==='all' ? credits(ym) : 0;
+  return {rev, dep, cred, net:rev-dep-cred};
+}
+function periodOps(year, month, bienId){
+  return S.operations.filter(o=>o.date.slice(0,4)===String(year) && (month==='all'||o.date.slice(5,7)===month) && (bienId==='all'||parts(o).some(p=>p.id===bienId)));
+}
+function projetTotals(p){
+  const ops=S.operations.filter(o=>o.projetId===p.id && o.type==='depense');
+  const paye=sum(ops.filter(o=>o.statut==='paye'),o=>o.montant);
+  const engage=sum(ops,o=>o.montant);
+  return {paye, engage, reste:p.budget-engage, ops};
+}
+function nextLoanDate(l){
+  let [y,m]=TODAY.split('-').map(Number); const d=Number(TODAY.slice(8));
+  if(d>(l.jour||5)){ m++; if(m>12){m=1;y++;} }
+  return `${y}-${pad(m)}-${pad(l.jour||5)}`;
+}
+function bienYear(id, year){
+  const ops=S.operations.filter(o=>o.date.slice(0,4)===String(year)&&o.statut!=='prevu'&&parts(o).some(p=>p.id===id));
+  const rev=sum(ops.filter(o=>o.type==='revenu'),o=>partFor(o,id));
+  const dep=sum(ops.filter(o=>o.type==='depense'),o=>partFor(o,id));
+  return {rev,dep,net:rev-dep};
+}
+function todoItems(){
+  // Paiements, loyers attendus et tâches, triés par urgence
+  const items=[];
+  for(const o of S.operations.filter(o=>o.statut==='a_payer')){
+    if(o.type==='revenu' && days(o.date)>3) continue;
+    items.push({kind:'op', id:o.id, date:o.date, titre:(o.type==='revenu'?'Recevoir : ':'Payer : ')+o.libelle+' — '+eur(o.montant), sous:opBiensLabel(o), icon:o.type==='revenu'?'in':'euro', tone:'o'});
+  }
+  for(const t of S.taches.filter(t=>!t.fait && t.type!=='decision')){
+    items.push({kind:'tache', id:t.id, date:t.echeance||'2999-12-31', titre:t.titre, sous:t.bienId?bienNom(t.bienId):'Patrimoine global', icon:'checksq', tone:t.priorite==='haute'?'r':''});
+  }
+  return items.sort((a,b)=>a.date.localeCompare(b.date));
+}
+function watchItems(){
+  const items=[];
+  for(const l of S.prets){ const d=nextLoanDate(l); if(days(d)<=20 && loanActive(l,d.slice(0,7))) items.push({date:d, titre:`Prélèvement ${l.nom.toLowerCase()} — ${eur(l.mensualite)}`, sous:l.banque, icon:'bank', href:'#prets'}); }
+  for(const b of S.biens){ if(b.finBail && days(b.finBail)<=365 && days(b.finBail)>=0) items.push({date:b.finBail, titre:`Fin du bail : ${b.nom}`, sous:b.locataire, icon:'key', href:'#bien-'+b.id}); }
+  for(const t of S.taches.filter(t=>!t.fait&&t.type==='decision')) items.push({date:t.echeance, titre:t.titre, sous:'Décision à prendre', icon:'idea', href:t.bienId?'#bien-'+t.bienId:'#a-faire', tab:'avenir'});
+  for(const d of fiscDeadlines()){ const n=days(d.date); if(n>=0&&n<=45) items.push({date:d.date, titre:d.titre, sous:'Fiscalité', icon:'receipt', href:'#fiscalite'}); }
+  for(const p of S.projets){ const t=projetTotals(p); if(t.reste<0) items.push({date:TODAY, titre:`Budget dépassé : ${p.nom}`, sous:`${eur(-t.reste)} au-delà du prévu`, icon:'alert', href:'#projet-'+p.id}); }
+  return items.sort((a,b)=>a.date.localeCompare(b.date));
+}
+
+/* ---------- Navigation ---------- */
+const NAV=[['accueil','Accueil','home'],['biens','Biens','homes'],['finances','Finances','wallet'],['fiscalite','Fiscalité','receipt'],['travaux','Travaux','tools'],['documents','Documents','file'],['a-faire','À faire','checksq']];
+function route(){ const h=(location.hash||'#accueil').slice(1); return h||'accueil'; }
+function section(r){ if(r.startsWith('bien-')) return 'biens'; if(r.startsWith('projet-')) return 'travaux'; if(r==='prets') return 'plus'; return r; }
+function paintNav(){
+  const r=section(route());
+  document.getElementById('brand').innerHTML=`${logo}<b>MAISON &amp;<br>PATRIMOINE</b>`;
+  document.getElementById('nav').innerHTML = NAV.map(([k,l,i])=>`<a href="#${k}" class="${r===k?'on':''}">${ic(i)}${l}</a>`).join('') +
+    `<div class="sep"></div><a href="#prets" class="${route()==='prets'?'on':''}">${ic('bank')}Prêts</a><a href="#plus" class="${route()==='plus'?'on':''}">${ic('more')}Plus</a>`;
+  const tb=[['accueil','Accueil','home'],['biens','Biens','homes'],['finances','Finances','wallet'],['travaux','Travaux','tools'],['a-faire','À faire','checksq'],['plus','Plus','more']];
+  document.getElementById('tabbar').innerHTML = tb.map(([k,l,i])=>`<a href="#${k}" class="${(r===k||(k==='plus'&&['documents','fiscalite','plus'].includes(r)))?'on':''}">${ic(i)}<span>${l}</span></a>`).join('');
+}
+function render(){
+  if(!S) return;
+  paintNav();
+  const r=route(); let html='';
+  if(r==='accueil') html=vAccueil();
+  else if(r==='biens') html=vBiens();
+  else if(r.startsWith('bien-')) html=vBien(r.slice(5));
+  else if(r==='finances') html=vFinances();
+  else if(r==='prets') html=vPrets();
+  else if(r==='travaux') html=vTravaux();
+  else if(r.startsWith('projet-')) html=vProjet(r.slice(7));
+  else if(r==='documents') html=vDocuments();
+  else if(r==='a-faire') html=vAFaire();
+  else if(r==='plus') html=vPlus();
+  else if(r==='fiscalite') html=vFiscalite();
+  else html=vAccueil();
+  document.getElementById('main').innerHTML=`<div class="wrap">${html}</div>`;
+  paintSave(); hydrate();
+}
+window.addEventListener('hashchange',()=>{ if(route().startsWith('bien-')&&!UI.keepTab) UI.bienTab='apercu'; UI.keepTab=false; render(); window.scrollTo(0,0); });
+
+/* ---------- Composants ---------- */
+function opRows(list, bienId='all', opts={}){
+  if(!list.length) return `<div class="empty">${ic('wallet')}<span>${opts.empty||'Aucune opération sur cette période.'}</span></div>`;
+  const rows=list.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,opts.limit||9999).map(o=>{
+    const amt=partFor(o,bienId); const sign=o.type==='revenu'?1:-1;
+    return `<div class="op" data-a="edit-op" data-id="${o.id}" role="button" tabindex="0">
+      <span class="d num">${dShort(o.date)}</span>
+      <span class="l"><b>${esc(o.libelle)}</b><span>${esc(o.categorie)}${o.fournisseur?' · '+esc(o.fournisseur):''}${o.justif?' · justificatif':''}</span></span>
+      <span class="w">${esc(opBiensLabel(o))}</span>
+      <span class="s">${badge(statusLbl(o))}</span>
+      <span class="m ${sign>0?'pos':''}">${sign>0?'+ ':'− '}${eur(Math.abs(amt)).replace('− ','')}</span></div>`;
+  }).join('');
+  return `<div class="ops"><div class="op hd"><span>Date</span><span>Libellé</span><span>Bien</span><span>Statut</span><span style="text-align:right">Montant</span></div>${rows}</div>`;
+}
+function monthChart(year, bienId='all', h=230){
+  const data=Array.from({length:12},(_,i)=>monthTotals(`${year}-${pad(i+1)}`,bienId));
+  const withCred = bienId==='all';
+  const vals=data.flatMap(d=>[d.rev,d.dep,d.cred]); const nets=data.map(d=>d.net);
+  const hi=Math.max(...vals,1), lo=Math.min(0,...nets); const step=niceMax((hi-lo)/4);
+  const max=Math.ceil(hi/step)*step; const min=Math.floor(lo/step)*step;
+  const W=720, ml=58, mr=10, mt=10, mb=28, H=h; const ih=H-mt-mb, iw=W-ml-mr;
+  const y=v=>mt+ih*(max-v)/(max-min); const gw=iw/12; const nb=withCred?3:2; const bw=Math.min(14,gw*0.8/nb);
+  let g='';
+  const ticks=[]; for(let v=min; v<=max+1e-6; v+=step) ticks.push(v);
+  for(const t of ticks){ g+=`<line x1="${ml}" x2="${W-mr}" y1="${y(t)}" y2="${y(t)}" stroke="${t===0?'#C9BCA6':'#ECE5D8'}" stroke-width="1"/><text x="${ml-8}" y="${y(t)+4}" text-anchor="end" font-size="11" fill="#5E6A65">${nf0.format(Math.round(t))} €</text>`; }
+  const cols=[['rev','#285548'],['dep','#D9B486'],['cred','#C9BCA6']].slice(0,nb);
+  data.forEach((d,i)=>{
+    const cx=ml+gw*i+gw/2; const x0=cx-bw*nb/2;
+    const future = `${year}-${pad(i+1)}` > CUR_YM;
+    cols.forEach(([k,c],j)=>{ const v=d[k]; if(v<=0) return; g+=`<rect x="${x0+j*bw}" y="${y(v)}" width="${bw-1.5}" height="${Math.max(1,y(0)-y(v))}" rx="2" fill="${c}" opacity="${future?.45:1}"><title>${MOIS_L[i]} : ${eur(v)}</title></rect>`; });
+    g+=`<text x="${cx}" y="${H-8}" text-anchor="middle" font-size="11" fill="${`${year}-${pad(i+1)}`===CUR_YM?'#183C32':'#5E6A65'}" font-weight="${`${year}-${pad(i+1)}`===CUR_YM?700:400}">${MOIS[i].replace('.','')}</text>`;
+  });
+  const pts=data.map((d,i)=>[ml+gw*i+gw/2, y(d.net), d]).filter((p,i)=>`${year}-${pad(i+1)}`<=CUR_YM && (p[2].rev||p[2].dep||p[2].cred));
+  if(pts.length>1) g+=`<polyline points="${pts.map(p=>p[0]+','+p[1]).join(' ')}" fill="none" stroke="#26302D" stroke-width="1.6" stroke-dasharray="4 3"/>`;
+  pts.forEach(p=>{ g+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="${p[2].net<0?'#B85C52':'#26302D'}"><title>Résultat : ${eur(p[2].net)}</title></circle>`; });
+  const legend=`<div class="legend"><span><i style="background:#285548"></i>Revenus</span><span><i style="background:#D9B486"></i>Dépenses</span>${withCred?'<span><i style="background:#C9BCA6"></i>Crédits</span>':''}<span><i style="background:#26302D;height:2px;border-radius:0;vertical-align:3px"></i>Résultat</span></div>`;
+  return `${legend}<div class="chart" style="margin-top:10px"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Évolution mensuelle ${year}">${g}</svg></div>`;
+}
+function niceMax(v){ if(v<=0) return 100; const p=Math.pow(10,Math.floor(Math.log10(v))); const n=v/p; const m=n<=1?1:n<=2?2:n<=2.5?2.5:n<=4?4:n<=5?5:n<=8?8:10; return m*p; }
+function donut(byCat){
+  const tot=sum(Object.values(byCat)); if(!tot) return `<div class="empty">${ic('wallet')}<span>Pas encore de dépense sur cette période.</span></div>`;
+  const ents=Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+  const r=56, C=2*Math.PI*r; let off=0;
+  const arcs=ents.map(([k,v])=>{ const len=C*v/tot; const s=`<circle cx="75" cy="75" r="${r}" fill="none" stroke="${CAT_COL[k]||'#D8CCB8'}" stroke-width="20" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 75 75)"><title>${esc(k)} : ${eur(v)}</title></circle>`; off+=len; return s; }).join('');
+  return `<div class="donut-wrap"><svg viewBox="0 0 150 150" width="150" height="150" role="img" aria-label="Répartition des dépenses">${arcs}<text x="75" y="74" text-anchor="middle" font-size="15" font-weight="800" fill="#26302D">${nf0.format(Math.round(tot))} €</text><text x="75" y="92" text-anchor="middle" font-size="10.5" fill="#5E6A65">au total</text></svg>
+  <div class="cat-l">${ents.map(([k,v])=>`<div><i style="background:${CAT_COL[k]||'#D8CCB8'}"></i><span>${esc(k)}</span><b class="num">${eur(v,false)}</b><span class="p num">${Math.round(v/tot*100)} %</span></div>`).join('')}</div></div>`;
+}
+function progress(pct, cls=''){ pct=Math.max(0,Math.min(100,pct)); return `<div class="bar ${cls}" role="progressbar" aria-valuenow="${Math.round(pct)}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>`; }
+function exampleNote(){ return S.exemple ? `<div class="note ex">${ic('idea')}<div><b>Ce sont des données d'exemple.</b> Modifiez-les directement ou repartez de zéro depuis <a href="#plus" class="link">Plus › Mes données</a>.</div></div>` : ''; }
+
+/* ---------- Vues ---------- */
+function vAccueil(){
+  const d=new Date(); const t=monthTotals(CUR_YM);
+  const loues=S.biens.filter(b=>b.statut==='loue');
+  const loyersM=S.operations.filter(o=>o.type==='revenu'&&o.categorie==='Loyer'&&o.date.slice(0,7)===CUR_YM);
+  const recus=loyersM.filter(o=>o.statut==='paye').length;
+  const depAPayer=sum(S.operations.filter(o=>o.type==='depense'&&o.statut==='a_payer'&&o.date.slice(0,7)===CUR_YM),o=>o.montant);
+  const todo=todoItems().slice(0,5); const watch=watchItems().slice(0,4);
+  const projets=S.projets.filter(p=>p.statut==='en_cours');
+  const catYear={}; S.operations.filter(o=>o.type==='depense'&&o.statut!=='prevu'&&o.date.slice(0,4)===CUR_YM.slice(0,4)).forEach(o=>catYear[o.categorie]=(catYear[o.categorie]||0)+o.montant);
+  const dateLong=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  return `
+  <div class="head"><div><h1>Bonjour !</h1><p class="sub">${dateLong.charAt(0).toUpperCase()+dateLong.slice(1)} · ${S.biens.length} biens, ${loues.length} loyers actifs</p></div>
+    <div class="head-actions"><button class="btn btn-p" data-a="add-menu">${ic('plus')}Ajouter</button></div></div>
+  ${exampleNote()}
+  <section class="kpis" aria-label="Ce mois-ci">
+    ${kpi('in','',`Revenus de ${MOIS_L[d.getMonth()]}`, eurBig(t.rev), `${recus} loyer${recus>1?'s':''} reçu${recus>1?'s':''} sur ${loyersM.length}`)}
+    ${kpi('out','o','Dépenses du mois', eurBig(t.dep), depAPayer?`dont ${eur(depAPayer)} à payer`:'Tout est réglé')}
+    ${kpi('bank','n','Crédits du mois', eurBig(t.cred), `${S.prets.filter(l=>loanActive(l,CUR_YM)).length} prêts en cours`)}
+    ${kpi('scale',t.net<0?'r':'','Résultat du mois', `<span class="${t.net<0?'neg':'pos'}">${eurBig(t.net,true)}</span>`, t.net<0?'Plus de sorties que d\'entrées':'Le mois est positif')}
+  </section>
+  <div class="dash">
+    <div class="col">
+      <section class="card"><div class="card-h"><h2>Mes biens</h2><a class="link" href="#biens">Voir les biens ${ic('arrow')}</a></div>
+        <div class="mini-biens">${S.biens.map(b=>`<a class="mini-bien" href="#bien-${b.id}"><span class="illu">${bImg(b)}</span><b>${esc(b.nom)}</b><span>${b.statut==='loue'?'Loué · '+eur(b.loyer)+'/mois':STATUTS_BIEN[b.statut][0]}</span></a>`).join('')}</div></section>
+      <section class="card"><div class="card-h"><h2>Finances ${CUR_YM.slice(0,4)}</h2><a class="link" href="#finances">Détail ${ic('arrow')}</a></div>
+        ${monthChart(CUR_YM.slice(0,4),'all',210)}
+        <div style="margin-top:18px">${donut(catYear)}</div></section>
+    </div>
+    <div class="col">
+      <section class="card"><div class="card-h"><h2>Travaux en cours</h2><a class="link" href="#travaux">Tous ${ic('arrow')}</a></div>
+        ${projets.length?`<div class="list">${projets.map(p=>{const tt=projetTotals(p);return `<a class="li" href="#projet-${p.id}" style="text-decoration:none"><span class="ic">${ic('tools')}</span><span class="tx"><b>${esc(p.nom)}</b><span>${eur(tt.paye)} dépensés sur ${eur(p.budget)}</span>${progress(p.progression)}</span><span class="when calm num">${p.progression} %</span></a>`;}).join('')}</div>`:`<div class="empty">Aucun chantier en cours.</div>`}</section>
+      <section class="card"><div class="card-h"><h2>À faire</h2><a class="link" href="#a-faire">Tout voir ${ic('arrow')}</a></div>
+        ${todo.length?`<div class="list">${todo.map(todoLi).join('')}</div>`:`<div class="empty">${ic('check')}<span>Rien d'urgent. Tout est à jour.</span></div>`}</section>
+      <section class="card"><div class="card-h"><h2>À surveiller</h2></div>
+        ${watch.length?`<div class="list">${watch.map(w=>{const [txt,cl]=rel(w.date);return `<a class="li" href="${w.href}" ${w.tab?`data-a="go-tab" data-tab="${w.tab}"`:''} style="text-decoration:none"><span class="ic">${ic(w.icon)}</span><span class="tx"><b>${esc(w.titre)}</b><span>${esc(w.sous||'')}</span></span><span class="when ${cl==='late'?'soon':'calm'}">${txt}</span></a>`;}).join('')}</div>`:`<div class="empty">Rien à signaler.</div>`}</section>
+    </div>
+  </div>`;
+}
+function kpi(i,cls,lbl,val,sub){ return `<div class="kpi"><span class="ic ${cls}">${ic(i)}</span><div style="min-width:0"><div class="lbl">${lbl}</div><div class="big">${val}</div><div class="s">${sub}</div></div></div>`; }
+function bImg(b){ return b.photo ? `<img ${srcAttr(b.photo)} alt="">` : illu(b.type); }
+function todoLi(it){
+  const [txt,cl]=rel(it.date);
+  const act = it.kind==='op' ? `<button class="btn btn-s btn-sm" data-a="pay" data-id="${it.id}">${it.icon==='in'?'Reçu':'Payé'}</button>` : `<button class="check" data-a="toggle-task" data-id="${it.id}" aria-label="Marquer comme fait"></button>`;
+  return `<div class="li">${it.kind==='tache'?act:`<span class="ic ${it.tone}">${ic(it.icon)}</span>`}<span class="tx" ${it.kind==='tache'?`data-a="edit-task" data-id="${it.id}" style="cursor:pointer"`:`data-a="edit-op" data-id="${it.id}" style="cursor:pointer"`}><b>${esc(it.titre)}</b><span>${esc(it.sous)}</span></span><span class="when ${cl}">${it.date.startsWith('2999')?'':txt}</span>${it.kind==='op'?act:''}</div>`;
+}
+
+function vBiens(){
+  const y=CUR_YM.slice(0,4);
+  return `<div class="head"><div><h1>Mes biens</h1><p class="sub">${S.biens.length} biens au total</p></div><div class="head-actions"><button class="btn btn-p" data-a="new-bien">${ic('plus')}Ajouter un bien</button></div></div>
+  <div class="biens">${S.biens.map(b=>{
+    const yy=bienYear(b.id,y); const pr=S.projets.filter(p=>p.biens.includes(b.id)&&p.statut==='en_cours').length;
+    const alerts=S.operations.filter(o=>o.statut==='a_payer'&&parts(o).some(p=>p.id===b.id)).length;
+    return `<article class="card bien"><a href="#bien-${b.id}" class="illu" aria-label="${esc(b.nom)}">${bImg(b)}</a>
+    <div class="t"><h3>${esc(b.nom)}</h3>${bienBadge(b)}</div>
+    <p class="addr">${esc(b.adresse)}</p>
+    <div class="facts">
+      ${b.statut==='loue'?`<div>${ic('euro')}Loyer : <b class="num">${eur(b.loyer)}/mois</b></div><div>${ic('user')}Locataire : ${esc(b.locataire||'—')}</div>`:`<div>${ic('home')}${b.statut==='residence'?'Résidence principale · 0 € de loyer':STATUTS_BIEN[b.statut][0]}</div>`}
+      <div>${ic('ruler')}Surface : ${b.surface?nf0.format(b.surface)+' m²':'—'}</div>
+      <div>${ic('out')}Dépenses ${y} : <b class="num">${eur(yy.dep)}</b></div>
+      ${pr||alerts?`<div>${ic('alert')}${[pr?pr+' chantier'+(pr>1?'s':'')+' en cours':'', alerts?alerts+' paiement'+(alerts>1?'s':'')+' en attente':''].filter(Boolean).join(' · ')}</div>`:''}
+    </div>
+    <a class="btn btn-p" href="#bien-${b.id}" style="margin-top:auto">Voir le bien ${ic('arrow')}</a></article>`;}).join('')}</div>`;
+}
+
+function vBien(id){
+  const b=bien(id); if(!b) return `<a class="back" href="#biens">${ic('back')}Retour aux biens</a><div class="empty">Ce bien n'existe plus.</div>`;
+  const y=CUR_YM.slice(0,4); const yy=bienYear(id,y);
+  const tabs=[['apercu',"Vue d'ensemble"],['finances','Finances'],['locataire',b.statut==='residence'?'Occupation':'Locataire'],['travaux','Travaux'],['documents','Documents'],['avenir','Avenir'],['historique','Historique']];
+  const ops=S.operations.filter(o=>parts(o).some(p=>p.id===id));
+  const projs=S.projets.filter(p=>p.biens.includes(id)); const docs=S.documents.filter(d=>d.bienId===id);
+  let body='';
+  if(UI.bienTab==='apercu'){
+    body=`<div class="split">
+      <div class="card"><div style="display:grid;grid-template-columns:minmax(0,1fr);gap:16px"><span class="illu">${bImg(b)}</span>
+        <div><div class="card-h" style="margin-bottom:10px"><h2>Informations</h2><button class="btn btn-g btn-sm" data-a="edit-bien" data-id="${id}">${ic('edit')}Modifier</button></div>
+        <dl class="info"><dt>Type</dt><dd>${TYPES_BIEN[b.type]||b.type}</dd><dt>Surface</dt><dd>${b.surface?nf0.format(b.surface)+' m²':'—'}</dd><dt>Statut</dt><dd>${STATUTS_BIEN[b.statut][0]}</dd>
+        ${b.statut==='loue'?`<dt>Locataire</dt><dd>${esc(b.locataire||'—')}</dd><dt>Loyer</dt><dd class="num">${eur(b.loyer)}/mois, le ${b.jourLoyer}</dd><dt>Fin du bail</dt><dd>${b.finBail?dFR(b.finBail):'—'}</dd>`:''}
+        ${b.notes?`<dt>Notes</dt><dd style="font-weight:500">${esc(b.notes)}</dd>`:''}</dl></div></div></div>
+      <div class="col">
+        <div class="card"><div class="card-h"><h2>Finances ${y}</h2></div>
+          <div class="stat3" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div><span>Revenus</span><b class="pos">${eur(yy.rev)}</b></div><div><span>Dépenses</span><b>${eur(yy.dep)}</b></div><div><span>Net</span><b class="${yy.net<0?'neg':'pos'}">${eur(yy.net)}</b></div></div>
+          <div style="margin-top:14px">${monthChart(y,id,170)}</div></div>
+        <div class="grid g2">
+          <button class="card choice" data-a="bien-tab" data-tab="travaux"><span class="ic">${ic('tools')}</span><span><b>Travaux</b><span>${projs.length} projet${projs.length>1?'s':''}</span></span></button>
+          <button class="card choice" data-a="bien-tab" data-tab="documents"><span class="ic">${ic('file')}</span><span><b>Documents</b><span>${docs.length} document${docs.length>1?'s':''}</span></span></button>
+        </div>
+      </div></div>
+      <section class="card"><div class="card-h"><h2>Dernières opérations</h2><button class="link" data-a="bien-tab" data-tab="finances">Tout voir ${ic('arrow')}</button></div>${opRows(ops.filter(o=>o.statut!=='prevu'),id,{limit:5})}</section>`;
+  } else if(UI.bienTab==='finances'){
+    body=`<section class="card"><div class="card-h"><h2>Toutes les opérations</h2><span class="small muted">Montants indiqués pour la part de ce bien</span></div>${opRows(ops,id,{empty:'Aucune opération pour ce bien.'})}</section>`;
+  } else if(UI.bienTab==='locataire'){
+    if(b.statut!=='loue') body=`<div class="card"><div class="empty">${ic('home')}<span>${b.statut==='residence'?'Ce bien est la résidence de la famille : il ne génère pas de loyer.':'Ce bien n\'est pas loué actuellement.'}</span><button class="btn btn-s" data-a="edit-bien" data-id="${id}">${ic('edit')}Changer le statut</button></div></div>`;
+    else {
+      const months=Array.from({length:12},(_,i)=>{const ym=`${y}-${pad(i+1)}`; const o=S.operations.find(o=>o.type==='revenu'&&o.categorie==='Loyer'&&o.date.slice(0,7)===ym&&o.repart.parts.some(p=>p.id===id)); return {ym,i,o};});
+      body=`<div class="split"><div class="card"><h2 style="margin-bottom:12px">Locataire</h2><dl class="info"><dt>Nom</dt><dd>${esc(b.locataire||'—')}</dd><dt>Loyer</dt><dd class="num">${eur(b.loyer)} par mois</dd><dt>Payé le</dt><dd>${b.jourLoyer} du mois</dd><dt>Fin du bail</dt><dd>${b.finBail?dFR(b.finBail)+' ('+rel(b.finBail)[0].toLowerCase()+')':'—'}</dd></dl><div style="margin-top:14px"><button class="btn btn-s btn-sm" data-a="edit-bien" data-id="${id}">${ic('edit')}Modifier</button></div></div>
+      <div class="card"><div class="card-h"><h2>Loyers ${y}</h2><span class="small muted">Touchez un mois en attente pour le marquer reçu</span></div><div class="months">${months.map(({ym,i,o})=>{
+        if(!o) return `<div class="month"><b>${MOIS[i]}</b><span class="muted">${ym>CUR_YM?'À venir':'—'}</span></div>`;
+        if(o.statut==='paye') return `<div class="month ok"><b>${MOIS[i]}</b><span>${ic('check').replace('<svg','<svg width="12" height="12"')} Reçu</span></div>`;
+        const late=days(o.date)<0; return `<button class="month ${late?'late':'warn'}" data-a="pay" data-id="${o.id}"><b>${MOIS[i]}</b><span>${late?'En retard':'À recevoir'}</span></button>`;}).join('')}</div></div></div>`;
+    }
+  } else if(UI.bienTab==='travaux'){
+    body=projs.length?`<div class="biens">${projs.map(projCard).join('')}</div>`:`<div class="card"><div class="empty">${ic('tools')}<span>Aucun projet de travaux pour ce bien.</span><button class="btn btn-s" data-a="new-projet" data-bien="${id}">${ic('plus')}Nouveau projet</button></div></div>`;
+  } else if(UI.bienTab==='documents'){
+    body=`<section class="card"><div class="card-h"><h2>Documents du bien</h2><button class="btn btn-s btn-sm" data-a="new-doc" data-bien="${id}">${ic('upload')}Ajouter</button></div>${docList(docs)}</section>`;
+  } else if(UI.bienTab==='avenir'){
+    body=vAvenir(b);
+  } else {
+    const ev=[...b.historique.map(h=>({date:h.date,t:h.texte,i:'history'})), ...ops.filter(o=>o.statut==='paye').map(o=>({date:o.date,t:(o.type==='revenu'?'Reçu : ':'Payé : ')+o.libelle+' — '+eur(partFor(o,id)),i:o.type==='revenu'?'in':'out'})), ...docs.map(d=>({date:d.date,t:'Document ajouté : '+d.nom,i:'file'}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,40);
+    body=`<section class="card"><h2 style="margin-bottom:8px">Historique</h2><div class="list">${ev.map(e=>`<div class="li"><span class="ic">${ic(e.i)}</span><span class="tx"><b>${esc(e.t)}</b><span>${dFR(e.date)}</span></span></div>`).join('')||'<div class="empty">Rien pour le moment.</div>'}</div></section>`;
+  }
+  return `<div><a class="back" href="#biens">${ic('back')}Retour aux biens</a>
+  <div class="head"><div><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><h1>${esc(b.nom)}</h1>${bienBadge(b)}</div><p class="sub">${esc(b.adresse)}</p></div>
+  <div class="head-actions"><button class="btn btn-s" data-a="edit-bien" data-id="${id}">${ic('edit')}Modifier</button><button class="btn btn-p" data-a="new-op" data-type="depense" data-bien="${id}">${ic('plus')}Ajouter une dépense</button></div></div></div>
+  <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button class="tab ${UI.bienTab===k?'on':''}" role="tab" aria-selected="${UI.bienTab===k}" data-a="bien-tab" data-tab="${k}">${l}</button>`).join('')}</div>
+  ${body}`;
+}
+function vAvenir(b){
+  const id=b.id; const pl=b.plan; const sc=b.scenarios||[];
+  const decisions=S.taches.filter(t=>t.bienId===id&&t.type==='decision'&&!t.fait);
+  let h=`<p class="muted" style="max-width:68ch">Cet espace sert à préparer les décisions, à côté de la gestion courante. Rien ici ne change les chiffres du bien.</p>`;
+  if(decisions.length) h+=`<div class="note">${ic('idea')}<div>${decisions.map(t=>`<b>${esc(t.titre)}</b> — ${rel(t.echeance)[0].toLowerCase()} (${dFR(t.echeance)})`).join('<br>')}</div></div>`;
+  if(pl){
+    const done=pl.etapes.filter(e=>e.fait).length;
+    h+=`<section class="card"><div class="card-h"><div><h2>${esc(pl.titre)}</h2><p class="small muted">Objectif : ${esc(pl.horizon||'à définir')} · Budget estimé ${eur(pl.budget||0)}</p></div><button class="btn btn-g btn-sm" data-a="edit-plan" data-id="${id}">${ic('edit')}Modifier</button></div>
+    ${pl.conditions?`<p class="small" style="margin-bottom:12px;max-width:70ch"><b>Conditions :</b> ${esc(pl.conditions)}</p>`:''}
+    <div class="prog" style="margin-bottom:6px">${progress(pl.etapes.length?done/pl.etapes.length*100:0)}<span class="num">${done}/${pl.etapes.length} étapes</span></div>
+    <div class="list">${pl.etapes.map(e=>`<div class="li ${e.fait?'done':''}"><button class="check ${e.fait?'on':''}" data-a="toggle-etape" data-id="${id}" data-e="${e.id}" aria-label="${e.fait?'Marquer à faire':'Marquer fait'}">${e.fait?ic('check'):''}</button><span class="tx"><b>${esc(e.titre)}</b></span><button class="iconbtn" data-a="del-etape" data-id="${id}" data-e="${e.id}" aria-label="Retirer l'étape">${ic('x')}</button></div>`).join('')}</div>
+    <form class="filters" data-f="add-etape" data-id="${id}" style="margin-top:10px"><input class="in" id="etape-${id}" name="t" placeholder="Ajouter une étape" style="flex:1;min-width:180px" required><button class="btn btn-s" type="submit">${ic('plus')}Ajouter</button></form></section>`;
+  }
+  h+=`<section><div class="card-h"><h2>Scénarios à comparer</h2><button class="btn btn-s btn-sm" data-a="new-scen" data-id="${id}">${ic('plus')}Nouveau scénario</button></div>
+  ${sc.length?`<div class="scen">${sc.map(s=>`<div class="card ${s.favori?'fav':''}"><div class="card-h" style="margin:0"><h3>${esc(s.titre)}</h3>${s.favori?badge(['Préféré','b-ok','star']):''}</div>
+    <dl class="info"><dt>Revenu / an</dt><dd class="num">${s.revenu?eur(s.revenu):'—'}</dd><dt>Coût estimé</dt><dd class="num">${s.cout?eur(s.cout):'—'}</dd><dt>Délai</dt><dd>${esc(s.delai||'—')}</dd>${s.cout&&s.revenu?`<dt>Rentabilisé en</dt><dd>${(s.cout/s.revenu).toFixed(1).replace('.',',')} an${s.cout/s.revenu>=2?'s':''}</dd>`:''}</dl>
+    ${s.notes?`<p class="small muted">${esc(s.notes)}</p>`:''}
+    <div style="display:flex;gap:6px;margin-top:auto;flex-wrap:wrap"><button class="btn btn-s btn-sm" data-a="fav-scen" data-id="${id}" data-s="${s.id}">${ic('star')}${s.favori?'Retirer':'Préférer'}</button><button class="btn btn-g btn-sm" data-a="edit-scen" data-id="${id}" data-s="${s.id}">${ic('edit')}Modifier</button></div></div>`).join('')}</div>`:`<div class="card"><div class="empty">${ic('idea')}<span>Aucun scénario pour l'instant. Ajoutez-en un pour comparer les options (relouer, transformer, vendre…).</span></div></div>`}</section>`;
+  if(!pl) h+=`<div><button class="btn btn-s" data-a="edit-plan" data-id="${id}">${ic('plus')}Préparer un projet pour ce bien</button></div>`;
+  return h;
+}
+
+function vFinances(){
+  const years=[...new Set(S.operations.map(o=>o.date.slice(0,4)).concat([CUR_YM.slice(0,4)]))].sort().reverse();
+  const year=UI.finYear||CUR_YM.slice(0,4); const m=UI.finMonth; const bId=UI.finBien;
+  let ops=periodOps(year,m,bId);
+  const done=ops.filter(o=>o.statut!=='prevu');
+  const rev=sum(done.filter(o=>o.type==='revenu'),o=>partFor(o,bId));
+  const dep=sum(done.filter(o=>o.type==='depense'),o=>partFor(o,bId));
+  const months = m==='all' ? Array.from({length:12},(_,i)=>`${year}-${pad(i+1)}`).filter(ym=>ym<=CUR_YM) : [`${year}-${m}`];
+  const cred = bId==='all' ? sum(months, credits) : 0;
+  const net=rev-dep-cred;
+  const aPayer=sum(ops.filter(o=>o.type==='depense'&&o.statut==='a_payer'),o=>partFor(o,bId));
+  const byCat={}; done.filter(o=>o.type==='depense').forEach(o=>byCat[o.categorie]=(byCat[o.categorie]||0)+partFor(o,bId));
+  const byBien={}; done.filter(o=>o.type==='depense').forEach(o=>parts(o).forEach(p=>byBien[p.id]=(byBien[p.id]||0)+o.montant*p.part/100));
+  const bTot=sum(Object.values(byBien));
+  if(UI.finTab==='revenus') ops=ops.filter(o=>o.type==='revenu'); else if(UI.finTab==='depenses') ops=ops.filter(o=>o.type==='depense');
+  const periodLbl = m==='all' ? `en ${year}` : `en ${MOIS_L[Number(m)-1]} ${year}`;
+  return `<div class="head"><div><h1>Finances</h1><p class="sub">Revenus, dépenses et prêts ${periodLbl}${bId!=='all'?' · '+esc(bienNom(bId)):''}</p></div>
+    <div class="head-actions"><button class="btn btn-s" data-a="new-op" data-type="revenu">${ic('in')}Revenu</button><button class="btn btn-p" data-a="new-op" data-type="depense">${ic('plus')}Ajouter une dépense</button></div></div>
+  <div class="filters">
+    <label class="sr" for="f-year" hidden>Année</label><select class="sel" id="f-year" data-ch="finYear" aria-label="Année">${years.map(y=>`<option ${y===year?'selected':''}>${y}</option>`).join('')}</select>
+    <select class="sel" id="f-month" data-ch="finMonth" aria-label="Période"><option value="all">Toute l'année</option>${MOIS_L.map((x,i)=>`<option value="${pad(i+1)}" ${m===pad(i+1)?'selected':''}>${x.charAt(0).toUpperCase()+x.slice(1)}</option>`).join('')}</select>
+    <select class="sel" id="f-bien" data-ch="finBien" aria-label="Bien"><option value="all">Tous les biens</option>${S.biens.map(b=>`<option value="${b.id}" ${bId===b.id?'selected':''}>${esc(b.nom)}</option>`).join('')}<option value="commun" ${bId==='commun'?'selected':''}>Patrimoine global (commun)</option></select>
+    <a class="btn btn-g btn-sm" href="#prets">${ic('bank')}Mes prêts</a>
+  </div>
+  <section class="kpis">
+    ${kpi('in','','Revenus', eurBig(rev), 'loyers et autres entrées')}
+    ${kpi('out','o','Dépenses', eurBig(dep), aPayer?`${eur(aPayer)} encore à payer`:'tout est réglé')}
+    ${kpi('bank','n','Crédits', eurBig(cred), bId==='all'?'mensualités des prêts':'non répartis par bien')}
+    ${kpi('scale',net<0?'r':'','Résultat net', `<span class="${net<0?'neg':'pos'}">${eurBig(net,true)}</span>`, net<0?'les sorties dépassent les entrées':'entrées − sorties')}
+  </section>
+  ${m==='all'?`<section class="card"><div class="card-h"><h2>Évolution mensuelle ${year}</h2></div>${monthChart(year,bId)}</section>`:''}
+  <div class="grid g2">
+    <section class="card"><div class="card-h"><h2>Dépenses par catégorie</h2></div>${donut(byCat)}</section>
+    <section class="card"><div class="card-h"><h2>Dépenses par bien</h2><span class="small muted">répartitions appliquées</span></div>
+      ${bTot?`<div class="hbars">${Object.entries(byBien).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="r"><span>${esc(bienNom(k))}</span>${progress(v/bTot*100)}<span>${eur(v,false)}</span></div>`).join('')}</div>`:`<div class="empty">Pas de dépense sur cette période.</div>`}</section>
+  </div>
+  <section class="card"><div class="card-h"><div class="tabs" style="border:0">${[['global','Toutes'],['revenus','Revenus'],['depenses','Dépenses']].map(([k,l])=>`<button class="tab ${UI.finTab===k?'on':''}" data-a="fin-tab" data-tab="${k}">${l}</button>`).join('')}</div><span class="small muted">${ops.length} opération${ops.length>1?'s':''}</span></div>${opRows(ops,bId)}</section>`;
+}
+
+function vPrets(){
+  return `<div class="head"><div><h1>Mes prêts</h1><p class="sub">${eur(sum(S.prets.filter(l=>loanActive(l,CUR_YM)),l=>l.mensualite))} de mensualités chaque mois</p></div><div class="head-actions"><button class="btn btn-p" data-a="new-pret">${ic('plus')}Ajouter un prêt</button></div></div>
+  ${S.prets.map(l=>{
+    const pct=(l.montant-l.restant)/l.montant*100; const nx=nextLoanDate(l);
+    return `<section class="card"><div class="card-h"><div style="display:flex;gap:12px;align-items:center"><span class="ic" style="width:40px;height:40px;border-radius:10px;background:var(--sauge-pale);display:grid;place-items:center;color:var(--sapin)">${ic(l.type==='travaux'?'tools':'home')}</span><div><h2>${esc(l.nom)}</h2><p class="small muted">${esc(l.banque||'')}</p></div></div>${loanActive(l,CUR_YM)?badge(['En cours','b-ok','dot']):badge(['Terminé','b-res','check'])}</div>
+    <div class="stat3"><div><span>Montant initial</span><b>${eur(l.montant)}</b></div><div><span>Mensualité</span><b>${eur(l.mensualite)}</b></div><div><span>Restant dû</span><b>${eur(l.restant)}</b></div><div><span>Taux</span><b>${String(l.taux).replace('.',',')} %</b></div></div>
+    <div class="grid g2" style="margin-top:16px;align-items:end">
+      <div><div class="prog">${progress(pct)}<span class="num">${Math.round(pct)} %</span></div><p class="small muted" style="margin-top:6px">${eur(l.montant-l.restant)} remboursés sur ${eur(l.montant)} · de ${dFR(l.debut)} à ${dFR(l.fin)}</p></div>
+      ${l.type==='travaux'&&l.utilise!=null?`<div><div class="prog">${progress(l.utilise/l.montant*100,'o')}<span class="num">${Math.round(l.utilise/l.montant*100)} %</span></div><p class="small muted" style="margin-top:6px">Budget travaux : ${eur(l.utilise)} utilisés, <b>${eur(l.montant-l.utilise)} encore disponibles</b></p></div>`:'<div></div>'}
+    </div>
+    <div class="filters" style="margin-top:14px;justify-content:space-between"><span class="small">Prochaine échéance : <b>${dFR(nx)}</b> · ${eur(l.mensualite)}</span><button class="btn btn-s btn-sm" data-a="edit-pret" data-id="${l.id}">${ic('edit')}Mettre à jour</button></div></section>`;}).join('')}
+  <div class="note">${ic('idea')}<div>Pensez à mettre à jour le <b>restant dû</b> une fois par an, à partir du tableau d'amortissement envoyé par la banque.</div></div>`;
+}
+
+function projCard(p){
+  const t=projetTotals(p); const b=bien(p.biens[0]);
+  const st={en_cours:['En cours','b-ok','dot'],a_venir:['À venir','b-info','cal'],termine:['Terminé','b-res','check']}[p.statut];
+  return `<article class="card proj"><a class="illu" href="#projet-${p.id}" aria-label="${esc(p.nom)}">${p.photos&&p.photos[0]?`<img ${srcAttr(p.photos[0])} alt="">`:(b?bImg(b):illu('maison'))}</a>
+    <div class="t" style="display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"><h3>${esc(p.nom)}</h3>${badge(st)}</div>
+    <p class="small muted">${p.biens.map(bienNom).join(' + ')}</p>
+    <div class="prog">${progress(p.progression)}<span class="num">${p.progression} %</span></div>
+    <div class="proj-n"><div><span>Budget prévu</span><b>${eur(p.budget)}</b></div><div><span>Dépensé</span><b>${eur(t.paye)}</b></div><div><span>Reste à prévoir</span><b class="${t.reste<0?'neg':''}">${eur(t.reste)}</b></div></div>
+    <a class="btn btn-s" href="#projet-${p.id}" style="margin-top:auto">Voir le projet ${ic('arrow')}</a></article>`;
+}
+function vTravaux(){
+  const f=UI.travFilter; const list=S.projets.filter(p=>f==='all'||p.statut===f);
+  const n=k=>S.projets.filter(p=>p.statut===k).length;
+  return `<div class="head"><div><h1>Mes projets de travaux</h1><p class="sub">Un chantier est un projet : budget, artisans, factures et prochaines actions.</p></div><div class="head-actions"><button class="btn btn-p" data-a="new-projet">${ic('plus')}Nouveau projet</button></div></div>
+  <div class="pills">${[['all',`Tous (${S.projets.length})`],['en_cours',`En cours (${n('en_cours')})`],['a_venir',`À venir (${n('a_venir')})`],['termine',`Terminés (${n('termine')})`]].map(([k,l])=>`<button class="pill ${f===k?'on':''}" data-a="trav-filter" data-f="${k}">${l}</button>`).join('')}</div>
+  ${list.length?`<div class="biens">${list.map(projCard).join('')}</div>`:`<div class="card"><div class="empty">${ic('tools')}<span>Aucun projet dans cette catégorie.</span></div></div>`}`;
+}
+function vProjet(id){
+  const p=S.projets.find(p=>p.id===id); if(!p) return `<a class="back" href="#travaux">${ic('back')}Retour aux projets</a><div class="empty">Ce projet n'existe plus.</div>`;
+  const t=projetTotals(p);
+  const st={en_cours:['En cours','b-ok','dot'],a_venir:['À venir','b-info','cal'],termine:['Terminé','b-res','check']}[p.statut];
+  const over=t.engage>p.budget;
+  return `<div><a class="back" href="#travaux">${ic('back')}Retour aux projets</a>
+  <div class="head"><div><div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><h1>${esc(p.nom)}</h1>${badge(st)}</div><p class="sub">${p.biens.map(id=>`<a href="#bien-${id}">${esc(bienNom(id))}</a>`).join(' + ')}</p></div>
+  <div class="head-actions"><button class="btn btn-s" data-a="edit-projet" data-id="${id}">${ic('edit')}Modifier</button><button class="btn btn-p" data-a="new-op" data-type="depense" data-projet="${id}">${ic('plus')}Ajouter une dépense</button></div></div></div>
+  <div class="split">
+    <div class="col">
+      <section class="card"><div class="card-h"><h2>Budget et avancement</h2></div>
+        <div class="stat3"><div><span>Budget prévu</span><b>${eur(p.budget)}</b></div><div><span>Engagé</span><b>${eur(t.engage)}</b></div><div><span>Dépensé</span><b>${eur(t.paye)}</b></div><div><span>Reste à prévoir</span><b class="${t.reste<0?'neg':''}">${eur(t.reste)}</b></div></div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:12px">
+          <div><div class="small muted" style="margin-bottom:4px">Budget utilisé</div><div class="prog">${progress(t.engage/p.budget*100, over?'r':'o')}<span class="num">${Math.round(t.engage/p.budget*100)} %</span></div>${over?`<p class="err" style="margin-top:4px">${ic('alert').replace('<svg','<svg width="14" height="14" style="vertical-align:-2px"')} Le budget est dépassé de ${eur(t.engage-p.budget)}.</p>`:''}</div>
+          <div><label class="small muted" for="prog-${id}">Avancement du chantier : <b class="num" id="progv">${p.progression} %</b></label><input type="range" id="prog-${id}" min="0" max="100" step="5" value="${p.progression}" data-in="progression" data-id="${id}" style="width:100%;accent-color:#285548"></div>
+        </div></section>
+      <section class="card"><div class="card-h"><h2>Prochaines actions</h2></div>
+        <div class="list">${p.actions.map(a=>`<div class="li ${a.fait?'done':''}"><button class="check ${a.fait?'on':''}" data-a="toggle-action" data-id="${id}" data-e="${a.id}" aria-label="Basculer">${a.fait?ic('check'):''}</button><span class="tx"><b>${esc(a.titre)}</b></span><button class="iconbtn" data-a="del-action" data-id="${id}" data-e="${a.id}" aria-label="Retirer">${ic('x')}</button></div>`).join('')||'<p class="muted small">Aucune action prévue.</p>'}</div>
+        <form class="filters" data-f="add-action" data-id="${id}" style="margin-top:10px"><input class="in" id="act-${id}" name="t" placeholder="Ajouter une action" style="flex:1;min-width:180px" required><button class="btn btn-s" type="submit">${ic('plus')}Ajouter</button></form></section>
+    </div>
+    <div class="col">
+      <section class="card"><h2 style="margin-bottom:10px">Description</h2><p style="max-width:65ch">${esc(p.description||'—')}</p>
+        <dl class="info" style="margin-top:14px"><dt>Début</dt><dd>${dFR(p.debut)}</dd><dt>Fin prévue</dt><dd>${dFR(p.finPrevue)}</dd><dt>Fin réelle</dt><dd>${p.finReelle?dFR(p.finReelle):'—'}</dd><dt>Artisans</dt><dd>${p.fournisseurs.map(esc).join(', ')||'—'}</dd></dl></section>
+      <section class="card"><div class="card-h"><h2>Photos</h2><label class="btn btn-s btn-sm" for="ph-${id}">${ic('photo')}Ajouter</label><input type="file" id="ph-${id}" accept="image/*" hidden data-up="photo" data-id="${id}"></div>
+        ${p.photos.length?`<div class="thumbs">${p.photos.map(u=>`<a ${hrefAttr(u)} target="_blank" rel="noopener"><img ${srcAttr(u)} alt="Photo du chantier"></a>`).join('')}</div>`:`<p class="muted small">Ajoutez des photos avant, pendant et après les travaux.</p>`}</section>
+    </div>
+  </div>
+  <section class="card"><div class="card-h"><h2>Dépenses et factures</h2><span class="small muted">${t.ops.length} ligne${t.ops.length>1?'s':''}</span></div>${opRows(t.ops,'all',{empty:'Aucune dépense liée. Ajoutez-en une avec le bouton en haut.'})}</section>`;
+}
+
+function docIcon(d){ const e=(d.ext||'').toLowerCase(); const c=['jpg','jpeg','png','webp','heic'].includes(e)?'i':['doc','docx'].includes(e)?'w':''; return `<span class="doc-ic ${c}">${esc((e||'doc').toUpperCase().slice(0,4))}</span>`; }
+function docList(docs){
+  if(!docs.length) return `<div class="empty">${ic('file')}<span>Aucun document ici.</span></div>`;
+  return `<div class="list">${docs.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(d=>`<div class="li">${docIcon(d)}<span class="tx" data-a="edit-doc" data-id="${d.id}" style="cursor:pointer"><b>${esc(d.nom)}</b><span>${esc(d.categorie)} · ${d.bienId?esc(bienNom(d.bienId)):'Commun'} · ${dFR(d.date)}${d.taille?' · '+fileSize(d.taille):''}</span></span>${d.url?`<a class="btn btn-s btn-sm" ${hrefAttr(d.url)} target="_blank" rel="noopener">Ouvrir</a>`:`<span class="badge">Exemple, sans fichier</span>`}</div>`).join('')}</div>`;
+}
+function vDocuments(){
+  const q=UI.docQ.trim().toLowerCase(); const f=UI.docBien;
+  const list=S.documents.filter(d=>(f==='all'||(f==='commun'?!d.bienId:d.bienId===f)) && (!q||(d.nom+' '+d.categorie).toLowerCase().includes(q)));
+  return `<div class="head"><div><h1>Documents</h1><p class="sub">${S.documents.length} documents classés par bien</p></div><div class="head-actions"><button class="btn btn-p" data-a="new-doc">${ic('upload')}Ajouter un document</button></div></div>
+  <div class="filters"><div class="pills">${[['all','Tous'],...S.biens.map(b=>[b.id,b.nom]),['commun','Communs']].map(([k,l])=>`<button class="pill ${f===k?'on':''}" data-a="doc-filter" data-f="${k}">${esc(l)}</button>`).join('')}</div>
+  <div class="search">${ic('search')}<input class="in" id="doc-q" type="search" placeholder="Rechercher un document" value="${esc(UI.docQ)}" data-in="docQ" aria-label="Rechercher"></div></div>
+  <section class="card" id="doc-list">${docList(list)}</section>`;
+}
+function vAFaire(){
+  const items=todoItems();
+  const late=items.filter(i=>days(i.date)<0), week=items.filter(i=>days(i.date)>=0&&days(i.date)<=7), later=items.filter(i=>days(i.date)>7);
+  const dec=S.taches.filter(t=>t.type==='decision'&&!t.fait).sort((a,b)=>a.echeance.localeCompare(b.echeance));
+  const done=S.taches.filter(t=>t.fait);
+  const blk=(t,arr,hint)=>arr.length?`<section class="card"><div class="card-h"><h2>${t}</h2><span class="small muted">${hint||''}</span></div><div class="list">${arr.map(todoLi).join('')}</div></section>`:'';
+  return `<div class="head"><div><h1>À faire</h1><p class="sub">${items.length} action${items.length>1?'s':''} en cours · paiements, rappels et projets</p></div><div class="head-actions"><button class="btn btn-p" data-a="new-task">${ic('plus')}Nouvelle tâche</button></div></div>
+  ${!items.length?`<div class="card"><div class="empty">${ic('check')}<span>Tout est à jour.</span></div></div>`:''}
+  ${blk('En retard',late,'à traiter en priorité')}${blk('Cette semaine',week)}${blk('Plus tard',later)}
+  ${dec.length?`<section class="card"><div class="card-h"><h2>Projets et décisions futurs</h2></div><div class="list">${dec.map(t=>`<div class="li"><span class="ic">${ic('idea')}</span><span class="tx" data-a="edit-task" data-id="${t.id}" style="cursor:pointer"><b>${esc(t.titre)}</b><span>${t.bienId?esc(bienNom(t.bienId)):'Patrimoine'} · avant le ${dFR(t.echeance)}</span></span>${t.bienId?`<a class="btn btn-s btn-sm" href="#bien-${t.bienId}" data-a="go-tab" data-tab="avenir">Préparer</a>`:''}</div>`).join('')}</div></section>`:''}
+  ${done.length?`<section class="card"><div class="card-h"><h2>Terminées</h2><button class="link" data-a="toggle-done">${UI.showDone?'Masquer':'Afficher ('+done.length+')'}</button></div>${UI.showDone?`<div class="list">${done.map(t=>`<div class="li done"><button class="check on" data-a="toggle-task" data-id="${t.id}" aria-label="Remettre à faire">${ic('check')}</button><span class="tx"><b>${esc(t.titre)}</b><span>${t.echeance?dFR(t.echeance):''}</span></span></div>`).join('')}</div>`:''}</section>`:''}`;
+}
+function vPlus(){
+  const fournisseurs=[...new Set(S.operations.map(o=>o.fournisseur).filter(Boolean).concat(S.projets.flatMap(p=>p.fournisseurs)))].sort((a,b)=>a.localeCompare(b,'fr'));
+  return `<div class="head"><div><h1>Plus</h1><p class="sub">Prêts, contacts et réglages du carnet</p></div></div>
+  <div class="choices">
+    <a class="choice" href="#prets"><span class="ic">${ic('bank')}</span><span><b>Mes prêts</b><span>Mensualités, restant dû, budget travaux</span></span></a>
+    <a class="choice" href="#documents"><span class="ic">${ic('file')}</span><span><b>Documents</b><span>Actes, baux, factures, diagnostics</span></span></a>
+    <a class="choice" href="#fiscalite"><span class="ic">${ic('receipt')}</span><span><b>Fiscalité</b><span>Taxe foncière, revenus fonciers, échéances</span></span></a>
+    ${SB?`<button type="button" class="choice" data-a="logout"><span class="ic">${ic('logout')}</span><span><b>Se déconnecter</b><span>${esc(SBUSER||'')}</span></span></button>`:''}
+  </div>
+  <section class="card"><div class="card-h"><h2>Artisans et fournisseurs</h2><span class="small muted">repris de vos dépenses</span></div>
+    <div class="chips" style="gap:8px">${fournisseurs.map(f=>`<span class="badge" style="font-size:.82rem;padding:5px 11px">${esc(f)}</span>`).join('')||'<span class="muted">Aucun pour l\'instant.</span>'}</div></section>
+  <section class="card"><div class="card-h"><h2>Mes données</h2></div>
+    <div class="list">
+      <div class="li"><span class="ic">${ic('check')}</span><span class="tx"><b>Enregistrement</b><span>${caps.artifact?'Les changements sont enregistrés dans ce carnet et visibles par les personnes avec qui vous le partagez.':'Les changements sont enregistrés dans ce navigateur.'}${S.maj?' Dernière modification : '+new Date(S.maj).toLocaleString('fr-FR',{dateStyle:'medium',timeStyle:'short'})+'.':''}</span></span></div>
+      ${S.exemple?`<div class="li"><span class="ic o">${ic('idea')}</span><span class="tx"><b>Repartir de zéro</b><span>Supprime les opérations, tâches, projets et documents d'exemple. Vos 4 biens sont conservés pour que vous les complétiez.</span></span><button class="btn btn-d btn-sm" data-a="reset">Effacer l'exemple</button></div>`:''}
+    </div></section>`;
+}
+
+/* ---------- Fiscalité ---------- */
+function fiscYearDefault(){ const y=Number(CUR_YM.slice(0,4)), m=Number(CUR_YM.slice(5)); return String(m>=7?y:y-1); }
+function fiscCalc(Y){
+  Y=String(Y); const isCur=Y===CUR_YM.slice(0,4);
+  const revOps=S.operations.filter(o=>o.type==='revenu'&&o.date.slice(0,4)===Y&&o.categorie!=='Charges récupérées');
+  const locIds=[...new Set(revOps.filter(o=>o.categorie==='Loyer').flatMap(o=>parts(o).map(p=>p.id)).filter(id=>id!=='commun'))];
+  const encaisse=sum(revOps.filter(o=>o.statut==='paye'),o=>o.montant);
+  const attendu=sum(revOps.filter(o=>o.statut!=='prevu'),o=>o.montant);
+  const projection = isCur ? attendu + sum(S.biens.filter(b=>b.statut==='loue'),b=>b.loyer)*(12-Number(CUR_YM.slice(5))) : encaisse;
+  const lignes=[]; let horsBien=0;
+  for(const o of S.operations){
+    if(o.type!=='depense'||o.date.slice(0,4)!==Y||o.statut!=='paye') continue;
+    if(o.repart.mode==='global'){ horsBien++; continue; }
+    const ps=o.repart.parts.filter(p=>locIds.includes(p.id)); if(!ps.length) continue;
+    const share=sum(ps,p=>p.part)/100; const teom=(o.teom||0)*share;
+    const auto=DEDUCT_DEFAULT[o.categorie]??false; const ded=o.deductible==null?auto:o.deductible;
+    lignes.push({o, montant:o.montant*share-teom, teom, ded, biens:ps.map(p=>bienNom(p.id)).join(' + '), partiel:share<0.999});
+  }
+  lignes.sort((a,b)=>a.o.date.localeCompare(b.o.date));
+  const charges=sum(lignes.filter(l=>l.ded),l=>l.montant);
+  const frais=FRAIS_GESTION*locIds.length;
+  const interets=Number(S.fiscal.interets?.[Y])||0;
+  const resultat=encaisse-charges-frais-interets;
+  const deficitGlobal = resultat<0 ? Math.max(0,(charges+frais)-Math.max(0,encaisse-interets)) : 0;
+  const imputable=Math.min(deficitGlobal,DEFICIT_PLAF);
+  const reportable=resultat<0 ? -resultat-imputable : 0;
+  const microOK=(isCur?projection:encaisse)<=MICRO_SEUIL;
+  const microBase=encaisse*(1-MICRO_ABATT);
+  const reelBase=Math.max(0,resultat);
+  const regime=!microOK?'reel':(reelBase<microBase?'reel':'micro');
+  const base=regime==='micro'?microBase:reelBase;
+  const tmi=S.fiscal.tmi;
+  const impot = tmi==null ? null : base*(tmi/100+PRELEV_SOCIAUX);
+  const economie = tmi==null||regime!=='reel' ? null : imputable*tmi/100;
+  const sansJustif=lignes.filter(l=>l.ded&&!l.o.justif).length;
+  return {Y,isCur,locIds,encaisse,attendu,projection,lignes,horsBien,charges,frais,interets,resultat,deficitGlobal,imputable,reportable,microOK,microBase,reelBase,regime,base,impot,economie,sansJustif};
+}
+function fiscZone(){
+  const d=String(S.fiscal?.departement||'').toUpperCase();
+  if(/^2[AB]$/.test(d)) return 2;
+  const n=parseInt(d,10); if(isNaN(n)) return 0;
+  return n<=19?1:n<=54?2:3;
+}
+function fiscDeadlines(){
+  const y0=Number(TODAY.slice(0,4)); const out=[]; const z=fiscZone();
+  const lim={1:'05-21',2:'05-28',3:'06-04'}[z]||'05-28';
+  const mk=(md,titre,detail,exact=[])=>{ for(const y of [y0,y0+1]){ const date=`${y}-${md}`; if(days(date)>=-2){ out.push({date,titre:titre.replace('{Y}',y-1),detail,indicatif:exact.length>0&&!exact.includes(y)}); return; } } };
+  mk('02-15',"Saisir les intérêts d'emprunt de {Y}","À partir de l'attestation annuelle de la banque, dans les réglages fiscaux.");
+  mk('04-09','Ouverture de la déclaration des revenus {Y}','Sur impots.gouv.fr. Revenus fonciers au régime réel : formulaire 2044.',[2026]);
+  mk(lim,'Date limite : déclaration des revenus {Y} en ligne',z?`Date pour votre département (${esc(S.fiscal.departement)}).`:'Indiquez votre département dans les réglages pour avoir la bonne date.',[2026]);
+  mk('07-01',"Signaler les changements d'occupation",'Espace « Gérer mes biens immobiliers ». Seulement si un bien a changé d\'occupant (nouveau locataire, logement repris).');
+  mk('10-15','Payer la taxe foncière','Le 15 octobre, ou le 20 octobre en paiement en ligne. Rien à faire si vous êtes mensualisé.',[2026]);
+  mk('11-15',"Refacturer la taxe d'ordures ménagères",'Demandez aux locataires la part TEOM de l\'avis de taxe foncière.');
+  return out.sort((a,b)=>a.date.localeCompare(b.date));
+}
+function vFiscalite(){
+  const CY=CUR_YM.slice(0,4);
+  const years=[...new Set(S.operations.map(o=>o.date.slice(0,4)).concat([CY]))].filter(y=>y<=CY).sort().reverse();
+  const Y=UI.fiscYear||fiscYearDefault(); const c=fiscCalc(Y); const tmi=S.fiscal.tmi;
+  const deficit=c.resultat<0;
+  // Taxe foncière
+  const tfOps=S.operations.filter(o=>o.type==='depense'&&o.categorie==='Taxes'&&o.date.slice(0,4)===Y).sort((a,b)=>a.date.localeCompare(b.date));
+  const tfTot=sum(tfOps,o=>o.montant);
+  const tfPrev=sum(S.operations.filter(o=>o.type==='depense'&&o.categorie==='Taxes'&&o.date.slice(0,4)===String(Number(Y)-1)),o=>o.montant);
+  const teomBy={};
+  tfOps.forEach(o=>{ if(!o.teom||o.repart.mode==='global') return; o.repart.parts.forEach(p=>{ const b=bien(p.id); if(b&&(c.locIds.includes(p.id)||b.statut==='loue')) teomBy[p.id]=(teomBy[p.id]||0)+o.teom*p.part/100; }); });
+  // régime
+  const rb = !c.microOK ? badge(['Réel obligatoire','b-info','receipt']) : badge([c.regime==='reel'?'Le réel est plus avantageux':'Le micro-foncier suffit','b-ok','check']);
+  const regimeTxt = !c.microOK
+    ? `Les loyers ${c.isCur?'prévus':'encaissés'} dépassent ${eur(MICRO_SEUIL)} sur l'année : vous déclarez au <b>régime réel</b>, sur le formulaire 2044. Vous déduisez vos vraies charges : travaux, taxe foncière, assurance, intérêts d'emprunt.`
+    : (c.regime==='reel' ? `Vos charges réelles dépassent l'abattement forfaitaire de 30 %. Opter pour le réel réduit la base imposable, mais engage pour 3 ans.` : `L'abattement de 30 % du micro-foncier est plus favorable que vos charges réelles, et il n'y a rien à justifier.`);
+  const deadlines=fiscDeadlines();
+  const fiscDocs=S.documents.filter(d=>d.categorie==='Taxes').sort((a,b)=>b.date.localeCompare(a.date));
+  const hasTFdoc = fiscDocs.some(d=>d.date.slice(0,4)===Y) || tfOps.some(o=>o.justif);
+  const checklist=[
+    [true,`Loyers encaissés en ${Y} : ${eur(c.encaisse)}`,'Calculé à partir des loyers marqués « Reçu ».'],
+    [c.interets>0,`Attestation d'intérêts d'emprunt ${Y}`, c.interets>0?`${eur(c.interets)} saisis.`:'À saisir dans les réglages fiscaux.'],
+    [hasTFdoc,`Avis de taxe foncière ${Y}`, hasTFdoc?'Classé dans les documents.':'Ajoutez l\'avis (PDF ou photo) aux documents.'],
+    [c.sansJustif===0,'Factures des dépenses déductibles', c.sansJustif?`${c.sansJustif} dépense${c.sansJustif>1?'s':''} sans justificatif : gardez les factures en cas de contrôle.`:'Toutes les factures sont jointes.'],
+    [tmi!=null,"Tranche d'imposition", tmi!=null?`${tmi} %, pour estimer l'impôt.`:"À indiquer dans les réglages pour estimer l'impôt."],
+  ];
+  const kImpot = tmi==null ? kpi('receipt','n','Impôt estimé','<span class="muted" style="font-size:1rem">À estimer</span>',`<button class="link" data-a="fisc-settings">Indiquer ma tranche</button>`)
+    : deficit ? kpi('receipt','','Économie d\'impôt estimée', `<span class="pos">${eurBig(c.economie||0)}</span>`, `déficit imputé sur vos autres revenus`)
+    : kpi('receipt','o','Impôt estimé', eurBig(c.impot), `tranche ${tmi} % + ${String(PRELEV_SOCIAUX*100).replace('.',',')} % prélèvements sociaux`);
+  return `<div class="head"><div><h1>Fiscalité</h1><p class="sub">Impôts, taxe foncière et revenus fonciers ${Y}${c.isCur?' (année en cours)':''}</p></div>
+    <div class="head-actions"><select class="sel" id="f-fyear" data-ch="fiscYear" aria-label="Année des revenus">${years.map(y=>`<option value="${y}" ${y===Y?'selected':''}>Revenus ${y}</option>`).join('')}</select><button class="btn btn-s" data-a="fisc-settings">${ic('edit')}Réglages fiscaux</button></div></div>
+  <div class="note">${ic('idea')}<div>Ces chiffres sont une <b>estimation</b> pour préparer la déclaration. Ils ne remplacent ni <a class="link" href="https://www.impots.gouv.fr" target="_blank" rel="noopener">impots.gouv.fr</a> ni l'avis d'un comptable. Règles appliquées : location nue, micro-foncier jusqu'à ${eur(MICRO_SEUIL)} de loyers, prélèvements sociaux de 17,2 %, déficit déductible jusqu'à ${eur(DEFICIT_PLAF)} par an.</div></div>
+  <section class="kpis">
+    ${kpi('in','',`Loyers encaissés ${Y}`, eurBig(c.encaisse), c.isCur?`environ ${eur(c.projection)} sur l'année`:`${c.locIds.length} bien${c.locIds.length>1?'s':''} loué${c.locIds.length>1?'s':''}`)}
+    ${kpi('out','o','Charges déductibles', eurBig(c.charges+c.frais+c.interets), `${c.lignes.filter(l=>l.ded).length} dépenses, intérêts et frais`)}
+    ${kpi('scale',deficit?'r':'',deficit?'Déficit foncier':'Revenu foncier net', `<span class="${deficit?'neg':'pos'}">${eurBig(c.resultat,true)}</span>`, 'au régime réel')}
+    ${kImpot}
+  </section>
+  <div class="grid g2">
+    <section class="card"><div class="card-h"><h2>Régime d'imposition</h2>${rb}</div>
+      <p style="max-width:68ch">${regimeTxt}</p>
+      <div class="fisc-cmp" style="margin-top:14px">
+        <div class="${c.regime==='micro'?'best':''}"><span>Micro-foncier (abattement 30 %)</span><b>${eur(c.microOK?c.microBase:0)}</b><span>${c.microOK?'imposables':'non accessible'}</span></div>
+        <div class="${c.regime==='reel'?'best':''}"><span>Régime réel (charges exactes)</span><b>${eur(c.reelBase)}</b><span>${deficit?'imposables : vous êtes en déficit':'imposables'}</span></div>
+      </div>
+      ${deficit?`<p class="small" style="margin-top:12px">Déficit de ${eur(-c.resultat)} : <b>${eur(c.imputable)}</b> se déduisent de vos autres revenus${c.reportable>0?`, et <b>${eur(c.reportable)}</b> se reportent sur les loyers des 10 prochaines années`:''}. Les biens doivent rester loués jusqu'au 31 décembre de la 3<sup>e</sup> année suivante.</p>`:''}
+      <p class="small muted" style="margin-top:12px">Le seuil de ${eur(MICRO_SEUIL)} compte tous les loyers du foyer fiscal, y compris ceux qui ne sont pas suivis ici.</p>
+    </section>
+    <section class="card"><div class="card-h"><h2>Taxe foncière ${Y}</h2><button class="btn btn-s btn-sm" data-a="new-op" data-type="depense" data-cat="Taxes">${ic('plus')}Ajouter un avis</button></div>
+      ${tfOps.length?`<div class="list">${tfOps.map(o=>`<div class="li"><span class="ic">${ic('receipt')}</span><span class="tx" data-a="edit-op" data-id="${o.id}" style="cursor:pointer"><b>${esc(o.libelle)}</b><span>${esc(opBiensLabel(o))}${o.teom?` · dont ${eur(o.teom)} d'ordures ménagères`:''}</span></span>${badge(statusLbl(o))}<span class="amt">${eur(o.montant)}</span></div>`).join('')}
+        <div class="li total"><span class="tx"><b>Total ${Y}</b>${tfPrev?`<span>${eur(tfPrev)} en ${Number(Y)-1}, soit ${tfTot>=tfPrev?'+':'−'} ${nf0.format(Math.abs((tfTot-tfPrev)/tfPrev*100))} %</span>`:''}</span><span class="amt">${eur(tfTot)}</span></div></div>`
+      :`<div class="empty">${ic('receipt')}<span>Aucune taxe enregistrée pour ${Y}. Ajoutez l'avis de taxe foncière dès sa réception, fin août.</span></div>`}
+      ${Object.keys(teomBy).length?`<div class="note" style="margin-top:14px">${ic('euro')}<div><b>À demander aux locataires : ${eur(sum(Object.values(teomBy)))}</b> de taxe d'ordures ménagères.<br>${Object.entries(teomBy).map(([id,v])=>`${esc(bienNom(id))} : ${eur(v)}`).join(' · ')}<div style="margin-top:8px"><button class="btn btn-s btn-sm" data-a="fisc-task" data-t="${esc(`Refacturer la TEOM ${Y} aux locataires (${eur(sum(Object.values(teomBy)))})`)}" data-d="${TODAY<`${Y}-11-15`?`${Y}-11-15`:TODAY}">${ic('plus')}Ajouter à « À faire »</button></div></div></div>`:''}
+    </section>
+  </div>
+  <section class="card"><div class="card-h"><div><h2>Charges déductibles ${Y}</h2><p class="small muted">Seule la part des biens loués est retenue. Décochez une dépense non déductible : agrandissement, construction, dépense personnelle.</p></div>${c.sansJustif?badge([`${c.sansJustif} sans justificatif`,'b-warn','alert']):''}</div>
+    ${c.horsBien?`<div class="note" style="margin-bottom:12px">${ic('alert')}<div>${c.horsBien} dépense${c.horsBien>1?'s':''} « Tout le patrimoine » ${c.horsBien>1?'ne sont':'n\'est'} pas comptée${c.horsBien>1?'s':''}. Rattachez-${c.horsBien>1?'les':'la'} aux biens concernés si ${c.horsBien>1?'elles concernent':'elle concerne'} des biens loués.</div></div>`:''}
+    <div class="list">${c.lignes.map(l=>`<div class="li ${l.ded?'':'off'}"><button class="check ${l.ded?'on':''}" data-a="deduct" data-id="${l.o.id}" aria-label="${l.ded?'Retirer des charges déductibles':'Compter comme déductible'}">${l.ded?ic('check'):''}</button><span class="tx" data-a="edit-op" data-id="${l.o.id}" style="cursor:pointer"><b>${esc(l.o.libelle)}</b><span>${dShort(l.o.date)} · ${esc(l.o.categorie)} · ${esc(l.biens)}${l.partiel?' (part louée)':''}${l.teom?` · TEOM de ${eur(l.teom)} exclue`:''}</span></span>${l.ded&&!l.o.justif?badge(['Sans facture','b-warn','alert']):''}<span class="amt">${eur(l.montant)}</span></div>`).join('')||`<div class="empty">Aucune dépense payée sur un bien loué en ${Y}.</div>`}
+      <div class="li"><span class="ic">${ic('bank')}</span><span class="tx"><b>Intérêts d'emprunt</b><span>${c.interets?"D'après l'attestation de la banque":'Non renseignés'} · <button class="link" data-a="fisc-settings">Modifier</button></span></span><span class="amt">${eur(c.interets)}</span></div>
+      <div class="li"><span class="ic">${ic('file')}</span><span class="tx"><b>Frais de gestion forfaitaires</b><span>${eur(FRAIS_GESTION)} par bien loué, ajoutés automatiquement au réel</span></span><span class="amt">${eur(c.frais)}</span></div>
+      <div class="li total"><span class="tx"><b>Total déductible</b></span><span class="amt">${eur(c.charges+c.frais+c.interets)}</span></div>
+    </div></section>
+  <div class="grid g2">
+    <section class="card"><div class="card-h"><h2>Calendrier fiscal</h2></div><div class="list">${deadlines.map(d=>{ const [t,cl]=rel(d.date); const n=days(d.date); return `<div class="li"><span class="ic ${n<=14?'o':''}">${ic('cal')}</span><span class="tx"><b>${esc(d.titre)}</b><span>${dFR(d.date)}${d.indicatif?' (date indicative)':''} · ${d.detail}</span></span><span class="when ${n<=14?'soon':'calm'}">${n>60?'':t}</span><button class="iconbtn" data-a="fisc-task" data-t="${esc(d.titre)}" data-d="${d.date}" aria-label="Ajouter à « À faire »" title="Ajouter à « À faire »">${ic('bell')}</button></div>`; }).join('')}</div></section>
+    <section class="card"><div class="card-h"><h2>Pour déclarer les revenus ${Y}</h2></div>
+      <div class="list">${checklist.map(([ok,t,s])=>`<div class="li"><span class="ic ${ok?'':'o'}">${ic(ok?'check':'clock')}</span><span class="tx"><b>${esc(t)}</b><span>${esc(s)}</span></span></div>`).join('')}</div>
+      <div class="card-h" style="margin:18px 0 8px"><h3>Documents fiscaux</h3><button class="btn btn-s btn-sm" data-a="new-doc" data-cat="Taxes">${ic('upload')}Ajouter</button></div>
+      ${docList(fiscDocs)}
+    </section>
+  </div>`;
+}
+function fiscForm(Y){
+  const f=S.fiscal;
+  openModal('Réglages fiscaux', `
+    <div class="f"><label for="fs-tmi">Votre tranche d'imposition (TMI)</label><select class="in" id="fs-tmi" name="tmi"><option value="">Je ne sais pas</option>${TMIS.map(t=>`<option value="${t}" ${f.tmi===t?'selected':''}>${t} %</option>`).join('')}</select><span class="hint">Indiquée sur le dernier avis d'impôt (« taux marginal d'imposition »). Elle sert seulement à estimer l'impôt.</span></div>
+    <div class="f"><label for="fs-int">Intérêts d'emprunt payés en ${Y}</label><div class="in-euro"><input class="in" id="fs-int" name="interets" inputmode="decimal" value="${f.interets[Y]!=null?String(f.interets[Y]).replace('.',','):''}"></div><span class="hint">Sur l'attestation annuelle de la banque. Ne comptez que la part des prêts qui finance les biens loués, assurance emprunteur comprise.</span></div>
+    <div class="f"><label for="fs-dep">Département du foyer fiscal</label><input class="in" id="fs-dep" name="departement" value="${esc(f.departement)}" maxlength="3" placeholder="Ex. : 03"><span class="hint">Il fixe la date limite de la déclaration en ligne.</span></div>`, {
+    onSubmit: fm=>{ const t=val(fm,'tmi'); const i=numv(fm,'interets'); if(i<0) return mErr('Les intérêts ne peuvent pas être négatifs.');
+      f.tmi = t===''?null:Number(t); if(isNaN(i)) delete f.interets[Y]; else f.interets[Y]=Math.round(i*100)/100; f.departement=val(fm,'departement').toUpperCase();
+      save(); toast('Réglages fiscaux enregistrés'); return true; }
+  });
+}
+
+/* ---------- Modales ---------- */
+let modalSubmit=null;
+function srcAttr(u){ return String(u).startsWith('sb:') ? `data-sb-src="${esc(u.slice(3))}" src="data:image/gif;base64,R0lGODlhAQABAAAAACw="` : `src="${esc(u)}"`; }
+function hrefAttr(u){ return String(u).startsWith('sb:') ? `data-sb-href="${esc(u.slice(3))}" href="#"` : `href="${esc(u)}"`; }
+function openModal(title, body, {submit='Enregistrer', onSubmit, onDelete, deleteLabel='Supprimer', wide=false}={}){
+  modalSubmit=onSubmit;
+  document.getElementById('modal-root').innerHTML=`<div class="modal-bg" data-a="close-bg"><form class="modal" id="mform" role="dialog" aria-modal="true" aria-label="${esc(title)}" novalidate>
+    <div class="modal-h"><h2>${esc(title)}</h2><button type="button" class="iconbtn" data-a="close" aria-label="Fermer">${ic('x')}</button></div>
+    <div class="modal-b">${body}<p class="err" id="merr" hidden></p></div>
+    ${onSubmit||onDelete?`<div class="modal-f">${onDelete?`<button type="button" class="btn btn-d left" data-a="m-del">${ic('trash')}${deleteLabel}</button>`:''}<button type="button" class="btn btn-s" data-a="close">Annuler</button>${onSubmit?`<button type="submit" class="btn btn-p">${submit}</button>`:''}</div>`:''}
+  </form></div>`;
+  window._mDel=onDelete; hydrate();
+  const first=document.querySelector('#mform .modal-b input:not([type=hidden]):not([type=radio]):not([type=checkbox]), #mform .modal-b select, #mform .modal-b button');
+  if(first && matchMedia('(min-width:861px)').matches) first.focus();
+}
+function closeModal(){ document.getElementById('modal-root').innerHTML=''; modalSubmit=null; }
+function mErr(t){ const e=document.getElementById('merr'); if(e){ e.textContent=t; e.hidden=!t; } }
+function confirmBox(text, label, fn){
+  openModal('Confirmer', `<p>${text}</p>`, {submit:label, onSubmit:()=>{ fn(); return true; }});
+  const b=document.querySelector('#mform button[type=submit]'); if(b){ b.className='btn btn-d'; }
+}
+const val = (f,n) => (f.elements[n]?.value ?? '').trim();
+const numv = (f,n) => { const v=val(f,n).replace(/\s/g,'').replace(',','.'); return v===''?NaN:Number(v); };
+
+function addMenu(){
+  openModal('Que voulez-vous ajouter ?', `<div class="choices">
+    ${[['new-op','depense','out','Une dépense','facture, achat, taxe'],['new-op','revenu','in','Un revenu','loyer, remboursement'],['new-task','','checksq','Une tâche','rappel, chose à faire'],['new-doc','','file','Un document','bail, facture, acte'],['new-projet','','tools','Un projet de travaux','budget, artisans'],['new-bien','','homes','Un bien','maison, logement, local']].map(([a,t,i,l,s])=>`<button type="button" class="choice" data-a="${a}" ${t?`data-type="${t}"`:''}><span class="ic">${ic(i)}</span><span><b>${l}</b><span>${s}</span></span></button>`).join('')}
+  </div>`);
+}
+
+function opForm(type, o, preset={}){
+  const isNew=!o; const dep=type==='depense';
+  o = o || {montant:'', date:TODAY, categorie:preset.cat||(dep?'':'Loyer'), libelle:'', repart:{mode:preset.bien?'un':(dep?'un':'un'), parts:preset.bien?[{id:preset.bien,part:100}]:[]}, fournisseur:'', statut:dep?'paye':'paye', justif:null, note:'', projetId:preset.projet||''};
+  if(isNew && preset.projet){ const p=S.projets.find(p=>p.id===preset.projet); if(p){ o.categorie='Travaux'; const n=p.biens.length; o.repart={mode:n>1?'plusieurs':'un',parts:p.biens.map((id,i)=>({id,part:n>1?(i<n-1?Math.floor(100/n):100-Math.floor(100/n)*(n-1)):100}))}; } }
+  const cats=dep?CATS_DEP:CATS_REV;
+  const fourn=[...new Set(S.operations.map(x=>x.fournisseur).filter(Boolean))];
+  const pmap=Object.fromEntries((o.repart.parts||[]).map(p=>[p.id,p.part]));
+  const mode=o.repart.mode;
+  const body=`
+  <div class="row2"><div class="f"><label for="m-montant">Montant</label><div class="in-euro"><input class="in" id="m-montant" name="montant" inputmode="decimal" value="${o.montant!==''?String(o.montant).replace('.',','):''}" placeholder="0" required></div></div>
+  <div class="f"><label for="m-date">Date</label><input class="in" type="date" id="m-date" name="date" value="${o.date}" required></div></div>
+  <div class="f"><label for="m-lib">Libellé</label><input class="in" id="m-lib" name="libelle" value="${esc(o.libelle)}" placeholder="${dep?'Ex. : Facture plombier':'Ex. : Loyer novembre'}" required></div>
+  <div class="f"><span class="lab">Catégorie</span><div class="chips" role="radiogroup">${cats.map(c=>`<label><input type="radio" name="categorie" value="${esc(c)}" ${o.categorie===c?'checked':''}>${esc(c)}</label>`).join('')}</div></div>
+  <div class="f"><span class="lab">Bien concerné</span>
+    <div class="seg" role="radiogroup"><label><input type="radio" name="mode" value="un" ${mode==='un'?'checked':''}>Un bien</label><label><input type="radio" name="mode" value="plusieurs" ${mode==='plusieurs'?'checked':''}>Plusieurs biens</label>${dep?`<label><input type="radio" name="mode" value="global" ${mode==='global'?'checked':''}>Tout le patrimoine</label>`:''}</div>
+    <div id="rep-un" ${mode!=='un'?'hidden':''}><select class="in" name="bienUn" id="m-bien" aria-label="Bien">${S.biens.map(b=>`<option value="${b.id}" ${pmap[b.id]?'selected':''}>${esc(b.nom)}</option>`).join('')}</select></div>
+    <div id="rep-plus" class="rep" ${mode!=='plusieurs'?'hidden':''}>
+      ${S.biens.map(b=>`<div class="rep-row"><input type="checkbox" id="rp-${b.id}" name="rp" value="${b.id}" ${mode==='plusieurs'&&pmap[b.id]?'checked':''} style="width:18px;height:18px;accent-color:#285548"><label for="rp-${b.id}">${esc(b.nom)}</label><input class="in" type="number" min="0" max="100" step="1" id="rpp-${b.id}" name="rpp-${b.id}" value="${mode==='plusieurs'&&pmap[b.id]?pmap[b.id]:''}" aria-label="Part en % pour ${esc(b.nom)}" placeholder="%"><span class="amt" id="rpa-${b.id}"></span></div>`).join('')}
+      <div class="filters" style="justify-content:space-between"><button type="button" class="link" data-a="rep-equal">Répartir à parts égales</button><span class="rep-sum" id="rep-sum"></span></div>
+    </div>
+    <p class="hint" id="rep-global" ${mode!=='global'?'hidden':''}>La dépense sera comptée dans « Patrimoine global », sans être attribuée à un bien.</p>
+  </div>
+  <div class="row2"><div class="f"><label for="m-four">${dep?'Fournisseur ou artisan':'Payé par'}</label><input class="in" id="m-four" name="fournisseur" list="dl-four" value="${esc(o.fournisseur)}" autocomplete="off"><datalist id="dl-four">${fourn.map(f=>`<option value="${esc(f)}">`).join('')}</datalist></div>
+  ${dep?`<div class="f"><label for="m-proj">Projet de travaux</label><select class="in" id="m-proj" name="projetId"><option value="">Aucun</option>${S.projets.map(p=>`<option value="${p.id}" ${o.projetId===p.id?'selected':''}>${esc(p.nom)}</option>`).join('')}</select></div>`:'<div></div>'}</div>
+  ${dep?`<div class="row2"><div class="f" id="teom-box" ${o.categorie!=='Taxes'?'hidden':''}><label for="m-teom">Dont ordures ménagères (TEOM)</label><div class="in-euro"><input class="in" id="m-teom" name="teom" inputmode="decimal" value="${o.teom?String(o.teom).replace('.',','):''}"></div><span class="hint">Ligne « Taxe d'enlèvement des ordures ménagères » de l'avis. Récupérable sur les locataires.</span></div>
+  <div class="f"><label for="m-ded">Impôts : déductible des loyers ?</label><select class="in" id="m-ded" name="deductible"><option value="auto" ${o.deductible==null?'selected':''}>Automatique (selon la catégorie)</option><option value="oui" ${o.deductible===true?'selected':''}>Oui, déductible</option><option value="non" ${o.deductible===false?'selected':''}>Non déductible</option></select><span class="hint">Seule la part des biens loués compte.</span></div></div>`:''}
+  <div class="f"><span class="lab">Statut</span><div class="seg" role="radiogroup"><label><input type="radio" name="statut" value="prevu" ${o.statut==='prevu'?'checked':''}>Prévu</label><label><input type="radio" name="statut" value="a_payer" ${o.statut==='a_payer'?'checked':''}>${dep?'À payer':'À recevoir'}</label><label><input type="radio" name="statut" value="paye" ${o.statut==='paye'?'checked':''}>${dep?'Payé':'Reçu'}</label></div></div>
+  <div class="f"><label for="m-file">Justificatif</label>${o.justif?`<p class="small">${o.justif.url?`<a ${hrefAttr(o.justif.url)} target="_blank" rel="noopener">${esc(o.justif.nom)}</a>`:esc(o.justif.nom)} · joint</p>`:''}<input class="in" type="file" id="m-file" name="file" accept="image/*,application/pdf" style="padding:9px 12px"><span class="hint">Photo ou PDF de la facture. Il sera aussi classé dans Documents.</span></div>
+  <div class="f"><label for="m-note">Note</label><textarea class="in" id="m-note" name="note" rows="2">${esc(o.note)}</textarea></div>`;
+  openModal(isNew?(dep?'Nouvelle dépense':'Nouveau revenu'):(dep?'Modifier la dépense':'Modifier le revenu'), body, {
+    onSubmit: async f => {
+      const montant=numv(f,'montant'); if(!(montant>0)) return mErr('Indiquez un montant supérieur à 0 €.');
+      if(!val(f,'date')) return mErr('Choisissez une date.');
+      if(!val(f,'libelle')) return mErr('Donnez un libellé court, par exemple « Facture plombier ».');
+      const cat=f.querySelector('input[name=categorie]:checked')?.value; if(!cat) return mErr('Choisissez une catégorie.');
+      const md=f.querySelector('input[name=mode]:checked').value; let ps=[];
+      if(md==='un') ps=[{id:val(f,'bienUn'),part:100}];
+      else if(md==='plusieurs'){ ps=[...f.querySelectorAll('input[name=rp]:checked')].map(c=>({id:c.value,part:Number(f.elements['rpp-'+c.value].value)||0})); if(ps.length<2) return mErr('Cochez au moins deux biens, ou choisissez « Un bien ».'); const t=sum(ps,p=>p.part); if(Math.abs(t-100)>0.5) return mErr(`La répartition fait ${nf0.format(t)} % : ajustez les parts pour arriver à 100 %.`); }
+      const file=f.elements.file.files[0];
+      const teom=dep&&cat==='Taxes'?numv(f,'teom'):NaN;
+      if(teom>montant) return mErr("La part ordures ménagères ne peut pas dépasser le montant de la taxe.");
+      const rec = o.id ? o : {id:uid('o'), type};
+      if(dep){ rec.teom = teom>0 ? teom : 0; const dv=val(f,'deductible'); rec.deductible = dv==='oui'?true:dv==='non'?false:null; }
+      Object.assign(rec,{type, montant:Math.round(montant*100)/100, date:val(f,'date'), libelle:val(f,'libelle'), categorie:cat, repart:{mode:md,parts:ps}, fournisseur:val(f,'fournisseur'), statut:f.querySelector('input[name=statut]:checked').value, note:val(f,'note'), projetId:dep?val(f,'projetId'):''});
+      if(file){ const btn=f.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Envoi du fichier…'; const up=await uploadFile(file); rec.justif={nom:file.name,url:up.url}; S.documents.push({id:uid('d'),nom:rec.libelle,categorie:dep?(cat==='Travaux'?'Travaux':cat==='Énergie'?'Énergie':cat==='Taxes'?'Taxes':'Autre'):'Autre',bienId:md==='un'?ps[0].id:'',date:rec.date,taille:file.size,url:up.url,ext:file.name.split('.').pop()}); }
+      if(!o.id) S.operations.push(rec);
+      save(); toast(isNew?(dep?'Dépense ajoutée':'Revenu ajouté'):'Modifications enregistrées'); return true;
+    },
+    onDelete: o.id ? ()=>confirmBox(`Supprimer « ${esc(o.libelle)} » (${eur(o.montant)}) ? Cette opération disparaîtra des totaux.`, 'Supprimer', ()=>{ S.operations=S.operations.filter(x=>x.id!==o.id); save(); toast('Opération supprimée'); }) : null
+  });
+  repUpdate();
+}
+function repUpdate(){
+  const f=document.getElementById('mform'); if(!f||!f.elements.mode) return;
+  const md=f.querySelector('input[name=mode]:checked')?.value;
+  ['un','plus','global'].forEach(k=>{ const el=document.getElementById('rep-'+k); if(el) el.hidden = (k==='plus'?'plusieurs':k)!==md; });
+  const m=numv(f,'montant')||0; let t=0;
+  for(const b of S.biens){ const c=f.elements['rp-'+b.id]||document.getElementById('rp-'+b.id); const pi=f.elements['rpp-'+b.id]; const a=document.getElementById('rpa-'+b.id); if(!c||!pi) continue; pi.disabled=!c.checked; const p=c.checked?Number(pi.value)||0:0; t+=p; if(a) a.textContent=c.checked&&m?eur(m*p/100):''; }
+  const s=document.getElementById('rep-sum'); if(s){ s.textContent=`Total : ${nf0.format(t)} %`; s.style.color=Math.abs(t-100)<=0.5?'var(--profond)':'var(--rouge)'; }
+}
+function repEqual(){
+  const f=document.getElementById('mform'); const on=S.biens.filter(b=>document.getElementById('rp-'+b.id)?.checked); if(!on.length) return;
+  const base=Math.floor(100/on.length); on.forEach((b,i)=>{ f.elements['rpp-'+b.id].value = i<on.length-1?base:100-base*(on.length-1); }); repUpdate();
+}
+
+function bienForm(b){
+  const isNew=!b; b=b||{nom:'',type:'maison',statut:'loue',adresse:'',surface:'',locataire:'',loyer:'',jourLoyer:5,finBail:'',notes:''};
+  openModal(isNew?'Nouveau bien':'Modifier le bien', `
+    <div class="f"><label for="b-nom">Nom du bien</label><input class="in" id="b-nom" name="nom" value="${esc(b.nom)}" placeholder="Ex. : Appartement centre-ville" required></div>
+    <div class="row2"><div class="f"><label for="b-type">Type</label><select class="in" id="b-type" name="type">${Object.entries(TYPES_BIEN).map(([k,l])=>`<option value="${k}" ${b.type===k?'selected':''}>${l}</option>`).join('')}</select></div>
+    <div class="f"><label for="b-surf">Surface (m²)</label><input class="in" id="b-surf" name="surface" inputmode="decimal" value="${b.surface||''}"></div></div>
+    <div class="f"><label for="b-adr">Adresse</label><input class="in" id="b-adr" name="adresse" value="${esc(b.adresse)}"></div>
+    <div class="f"><span class="lab">Statut</span><div class="seg">${Object.entries(STATUTS_BIEN).map(([k,[l]])=>`<label><input type="radio" name="statut" value="${k}" ${b.statut===k?'checked':''}>${l}</label>`).join('')}</div><span class="hint">Changer le statut garde tout l'historique du bien.</span></div>
+    <div id="b-loc" class="col" style="gap:14px" ${b.statut!=='loue'?'hidden':''}>
+      <div class="row2"><div class="f"><label for="b-locn">Locataire</label><input class="in" id="b-locn" name="locataire" value="${esc(b.locataire)}"></div><div class="f"><label for="b-loyer">Loyer mensuel</label><div class="in-euro"><input class="in" id="b-loyer" name="loyer" inputmode="decimal" value="${b.loyer||''}"></div></div></div>
+      <div class="row2"><div class="f"><label for="b-jour">Payé le (jour du mois)</label><input class="in" id="b-jour" name="jourLoyer" type="number" min="1" max="31" value="${b.jourLoyer||5}"></div><div class="f"><label for="b-fin">Fin du bail</label><input class="in" id="b-fin" name="finBail" type="date" value="${b.finBail||''}"></div></div>
+    </div>
+    <div class="f"><label for="b-photo">Photo du bien</label><input class="in" type="file" id="b-photo" name="photo" accept="image/*" style="padding:9px 12px"><span class="hint">Sinon, une illustration est utilisée.</span></div>
+    <div class="f"><label for="b-notes">Notes</label><textarea class="in" id="b-notes" name="notes">${esc(b.notes)}</textarea></div>`, {
+    onSubmit: async f=>{
+      if(!val(f,'nom')) return mErr('Donnez un nom au bien.');
+      const st=f.querySelector('input[name=statut]:checked').value;
+      const loyer=numv(f,'loyer');
+      if(st==='loue' && !(loyer>0)) return mErr('Indiquez le loyer mensuel du bien loué.');
+      const rec=b.id?b:{id:uid('b'),historique:[]};
+      if(b.id && b.statut!==st) rec.historique.push({date:TODAY,texte:`Statut : ${STATUTS_BIEN[b.statut][0]} → ${STATUTS_BIEN[st][0]}`});
+      if(b.id && st==='loue' && b.loyer!==loyer && b.loyer) rec.historique.push({date:TODAY,texte:`Loyer : ${eur(b.loyer)} → ${eur(loyer)}`});
+      Object.assign(rec,{nom:val(f,'nom'),type:val(f,'type'),surface:numv(f,'surface')||0,adresse:val(f,'adresse'),statut:st,locataire:st==='loue'?val(f,'locataire'):'',loyer:st==='loue'?loyer:0,jourLoyer:Number(val(f,'jourLoyer'))||5,finBail:st==='loue'?val(f,'finBail'):'',notes:val(f,'notes')});
+      const file=f.elements.photo.files[0]; if(file){ const up=await uploadFile(file); if(up.url) rec.photo=up.url; }
+      if(!b.id){ rec.historique.push({date:TODAY,texte:'Bien ajouté au carnet'}); S.biens.push(rec); }
+      ensureRents(); save(); toast(isNew?'Bien ajouté':'Bien mis à jour'); if(isNew){ location.hash='bien-'+rec.id; } return true;
+    },
+    onDelete: b.id ? ()=>confirmBox(`Supprimer « ${esc(b.nom)} » ? Les opérations déjà saisies sont conservées dans les totaux, mais ne seront plus rattachées à ce bien.`, 'Supprimer le bien', ()=>{ S.biens=S.biens.filter(x=>x.id!==b.id); save(); location.hash='biens'; toast('Bien supprimé'); }) : null
+  });
+}
+function taskForm(t){
+  const isNew=!t; t=t||{titre:'',echeance:'',priorite:'normale',bienId:'',type:'tache',fait:false};
+  openModal(isNew?'Nouvelle tâche':'Modifier la tâche', `
+    <div class="f"><label for="t-t">Quoi faire ?</label><input class="in" id="t-t" name="titre" value="${esc(t.titre)}" placeholder="Ex. : Appeler l'assurance" required></div>
+    <div class="row2"><div class="f"><label for="t-d">Pour quand ?</label><input class="in" id="t-d" type="date" name="echeance" value="${t.echeance}"></div>
+    <div class="f"><label for="t-b">Bien concerné</label><select class="in" id="t-b" name="bienId"><option value="">Patrimoine global</option>${S.biens.map(b=>`<option value="${b.id}" ${t.bienId===b.id?'selected':''}>${esc(b.nom)}</option>`).join('')}</select></div></div>
+    <div class="row2"><div class="f"><span class="lab">Priorité</span><div class="seg"><label><input type="radio" name="priorite" value="normale" ${t.priorite!=='haute'?'checked':''}>Normale</label><label><input type="radio" name="priorite" value="haute" ${t.priorite==='haute'?'checked':''}>Haute</label></div></div>
+    <div class="f"><span class="lab">Type</span><div class="seg"><label><input type="radio" name="type" value="tache" ${t.type!=='decision'?'checked':''}>Tâche</label><label><input type="radio" name="type" value="decision" ${t.type==='decision'?'checked':''}>Décision future</label></div></div></div>`, {
+    onSubmit: f=>{ if(!val(f,'titre')) return mErr('Décrivez la tâche en quelques mots.'); if(f.querySelector('input[name=type]:checked').value==='decision'&&!val(f,'echeance')) return mErr('Une décision future a besoin d\'une date limite.');
+      const rec=t.id?t:{id:uid('t'),fait:false}; Object.assign(rec,{titre:val(f,'titre'),echeance:val(f,'echeance'),bienId:val(f,'bienId'),priorite:f.querySelector('input[name=priorite]:checked').value,type:f.querySelector('input[name=type]:checked').value});
+      if(!t.id) S.taches.push(rec); save(); toast(isNew?'Tâche ajoutée':'Tâche mise à jour'); return true; },
+    onDelete: t.id ? ()=>confirmBox(`Supprimer la tâche « ${esc(t.titre)} » ?`,'Supprimer',()=>{ S.taches=S.taches.filter(x=>x.id!==t.id); save(); }) : null
+  });
+}
+function projetForm(p, preset={}){
+  const isNew=!p; p=p||{nom:'',biens:preset.bien?[preset.bien]:[],budget:'',progression:0,statut:'a_venir',debut:TODAY,finPrevue:'',finReelle:'',fournisseurs:[],description:'',actions:[],photos:[]};
+  openModal(isNew?'Nouveau projet de travaux':'Modifier le projet', `
+    <div class="f"><label for="p-n">Nom du projet</label><input class="in" id="p-n" name="nom" value="${esc(p.nom)}" placeholder="Ex. : Rénovation de la salle de bain" required></div>
+    <div class="f"><span class="lab">Bien(s) concerné(s)</span><div class="chips">${S.biens.map(b=>`<label><input type="checkbox" name="biens" value="${b.id}" ${p.biens.includes(b.id)?'checked':''}>${esc(b.nom)}</label>`).join('')}</div></div>
+    <div class="row2"><div class="f"><label for="p-b">Budget prévu</label><div class="in-euro"><input class="in" id="p-b" name="budget" inputmode="decimal" value="${p.budget}"></div></div>
+    <div class="f"><span class="lab">Statut</span><select class="in" name="statut" aria-label="Statut"><option value="a_venir" ${p.statut==='a_venir'?'selected':''}>À venir</option><option value="en_cours" ${p.statut==='en_cours'?'selected':''}>En cours</option><option value="termine" ${p.statut==='termine'?'selected':''}>Terminé</option></select></div></div>
+    <div class="row2"><div class="f"><label for="p-d">Début</label><input class="in" type="date" id="p-d" name="debut" value="${p.debut}"></div><div class="f"><label for="p-f">Fin prévue</label><input class="in" type="date" id="p-f" name="finPrevue" value="${p.finPrevue}"></div></div>
+    ${!isNew?`<div class="f"><label for="p-fr">Fin réelle</label><input class="in" type="date" id="p-fr" name="finReelle" value="${p.finReelle}"></div>`:''}
+    <div class="f"><label for="p-a">Artisans</label><input class="in" id="p-a" name="fournisseurs" value="${esc(p.fournisseurs.join(', '))}" placeholder="Séparés par des virgules"></div>
+    <div class="f"><label for="p-desc">Description</label><textarea class="in" id="p-desc" name="description">${esc(p.description)}</textarea></div>`, {
+    onSubmit: f=>{ const bs=[...f.querySelectorAll('input[name=biens]:checked')].map(c=>c.value); const bud=numv(f,'budget');
+      if(!val(f,'nom')) return mErr('Donnez un nom au projet.'); if(!bs.length) return mErr('Choisissez au moins un bien.'); if(!(bud>0)) return mErr('Indiquez un budget prévu, même approximatif.');
+      const rec=p.id?p:{id:uid('p'),progression:0,actions:[],photos:[]};
+      Object.assign(rec,{nom:val(f,'nom'),biens:bs,budget:bud,statut:val(f,'statut'),debut:val(f,'debut'),finPrevue:val(f,'finPrevue'),finReelle:f.elements.finReelle?val(f,'finReelle'):'',fournisseurs:val(f,'fournisseurs').split(',').map(s=>s.trim()).filter(Boolean),description:val(f,'description')});
+      if(rec.statut==='termine') rec.progression=100;
+      if(!p.id){ S.projets.push(rec); location.hash='projet-'+rec.id; } save(); toast(isNew?'Projet créé':'Projet mis à jour'); return true; },
+    onDelete: p.id ? ()=>confirmBox(`Supprimer le projet « ${esc(p.nom)} » ? Les dépenses liées restent dans vos finances.`,'Supprimer',()=>{ S.projets=S.projets.filter(x=>x.id!==p.id); S.operations.forEach(o=>{if(o.projetId===p.id)o.projetId='';}); save(); location.hash='travaux'; }) : null
+  });
+}
+function docForm(d, preset={}){
+  const isNew=!d; d=d||{nom:'',categorie:preset.cat||'Contrat',bienId:preset.bien||'',date:TODAY};
+  openModal(isNew?'Ajouter un document':'Modifier le document', `
+    ${isNew?`<div class="f"><label for="d-file">Fichier</label><input class="in" type="file" id="d-file" name="file" style="padding:9px 12px" required></div>`:''}
+    <div class="f"><label for="d-n">Nom</label><input class="in" id="d-n" name="nom" value="${esc(d.nom)}" placeholder="Pris du fichier si vide"></div>
+    <div class="row2"><div class="f"><label for="d-c">Catégorie</label><select class="in" id="d-c" name="categorie">${DOC_CATS.map(c=>`<option ${d.categorie===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    <div class="f"><label for="d-b">Bien</label><select class="in" id="d-b" name="bienId"><option value="">Commun à tous</option>${S.biens.map(b=>`<option value="${b.id}" ${d.bienId===b.id?'selected':''}>${esc(b.nom)}</option>`).join('')}</select></div></div>
+    <div class="f"><label for="d-d">Date du document</label><input class="in" type="date" id="d-d" name="date" value="${d.date}"></div>`, {
+    submit:isNew?'Ajouter':'Enregistrer',
+    onSubmit: async f=>{ const file=isNew?f.elements.file.files[0]:null; if(isNew&&!file) return mErr('Choisissez le fichier à ajouter.');
+      const rec=d.id?d:{id:uid('d')}; Object.assign(rec,{nom:val(f,'nom')||(file?file.name.replace(/\.[^.]+$/,''):d.nom),categorie:val(f,'categorie'),bienId:val(f,'bienId'),date:val(f,'date')||TODAY});
+      if(file){ const btn=f.querySelector('button[type=submit]'); btn.disabled=true; btn.textContent='Envoi…'; const up=await uploadFile(file); Object.assign(rec,{url:up.url,taille:file.size,ext:file.name.split('.').pop()}); S.documents.push(rec); }
+      save(); toast(isNew?'Document ajouté':'Document mis à jour'); return true; },
+    onDelete: d.id ? ()=>confirmBox(`Retirer « ${esc(d.nom)} » des documents ?`,'Retirer',()=>{ S.documents=S.documents.filter(x=>x.id!==d.id); save(); }) : null
+  });
+}
+function pretForm(l){
+  const isNew=!l; l=l||{nom:'',type:'immobilier',banque:'',montant:'',mensualite:'',taux:'',debut:CUR_YM,fin:'',restant:'',utilise:'',jour:5};
+  openModal(isNew?'Ajouter un prêt':'Mettre à jour le prêt', `
+    <div class="row2"><div class="f"><label for="l-n">Nom</label><input class="in" id="l-n" name="nom" value="${esc(l.nom)}" required></div><div class="f"><label for="l-b">Banque</label><input class="in" id="l-b" name="banque" value="${esc(l.banque)}"></div></div>
+    <div class="f"><span class="lab">Type</span><div class="seg"><label><input type="radio" name="type" value="immobilier" ${l.type!=='travaux'?'checked':''}>Immobilier</label><label><input type="radio" name="type" value="travaux" ${l.type==='travaux'?'checked':''}>Travaux</label></div></div>
+    <div class="row2"><div class="f"><label for="l-m">Montant initial</label><div class="in-euro"><input class="in" id="l-m" name="montant" inputmode="decimal" value="${l.montant}"></div></div><div class="f"><label for="l-me">Mensualité</label><div class="in-euro"><input class="in" id="l-me" name="mensualite" inputmode="decimal" value="${l.mensualite}"></div></div></div>
+    <div class="row2"><div class="f"><label for="l-r">Restant dû</label><div class="in-euro"><input class="in" id="l-r" name="restant" inputmode="decimal" value="${l.restant}"></div></div><div class="f"><label for="l-t">Taux (%)</label><input class="in" id="l-t" name="taux" inputmode="decimal" value="${String(l.taux).replace('.',',')}"></div></div>
+    <div class="row2"><div class="f"><label for="l-d">Début</label><input class="in" type="month" id="l-d" name="debut" value="${l.debut}"></div><div class="f"><label for="l-f">Fin prévue</label><input class="in" type="month" id="l-f" name="fin" value="${l.fin}"></div></div>
+    <div class="row2"><div class="f"><label for="l-j">Prélevé le (jour)</label><input class="in" type="number" min="1" max="28" id="l-j" name="jour" value="${l.jour||5}"></div><div class="f"><label for="l-u">Budget travaux déjà utilisé</label><div class="in-euro"><input class="in" id="l-u" name="utilise" inputmode="decimal" value="${l.utilise??''}"></div><span class="hint">Pour un prêt travaux uniquement</span></div></div>`, {
+    onSubmit: f=>{ const m=numv(f,'montant'), me=numv(f,'mensualite'), r=numv(f,'restant');
+      if(!val(f,'nom')) return mErr('Donnez un nom au prêt.'); if(!(m>0)||!(me>0)) return mErr('Le montant initial et la mensualité sont nécessaires.'); if(!val(f,'debut')||!val(f,'fin')) return mErr('Indiquez le mois de début et de fin.');
+      const rec=l.id?l:{id:uid('l')}; const u=numv(f,'utilise');
+      Object.assign(rec,{nom:val(f,'nom'),banque:val(f,'banque'),type:f.querySelector('input[name=type]:checked').value,montant:m,mensualite:me,restant:isNaN(r)?m:r,taux:numv(f,'taux')||0,debut:val(f,'debut'),fin:val(f,'fin'),jour:Number(val(f,'jour'))||5,utilise:isNaN(u)?null:u});
+      if(!l.id) S.prets.push(rec); save(); toast('Prêt enregistré'); return true; },
+    onDelete: l.id ? ()=>confirmBox(`Supprimer le prêt « ${esc(l.nom)} » ? Ses mensualités ne seront plus comptées.`,'Supprimer',()=>{ S.prets=S.prets.filter(x=>x.id!==l.id); save(); }) : null
+  });
+}
+function scenForm(bId, s){
+  const b=bien(bId); const isNew=!s; s=s||{titre:'',revenu:'',cout:'',delai:'',notes:'',favori:false};
+  openModal(isNew?'Nouveau scénario':'Modifier le scénario', `
+    <div class="f"><label for="s-t">Scénario</label><input class="in" id="s-t" name="titre" value="${esc(s.titre)}" placeholder="Ex. : Relouer en bureau" required></div>
+    <div class="row2"><div class="f"><label for="s-r">Revenu par an</label><div class="in-euro"><input class="in" id="s-r" name="revenu" inputmode="decimal" value="${s.revenu||''}"></div></div><div class="f"><label for="s-c">Coût estimé</label><div class="in-euro"><input class="in" id="s-c" name="cout" inputmode="decimal" value="${s.cout||''}"></div></div></div>
+    <div class="f"><label for="s-d">Délai</label><input class="in" id="s-d" name="delai" value="${esc(s.delai)}" placeholder="Ex. : 3 à 6 mois"></div>
+    <div class="f"><label for="s-n">Notes, avantages, inconvénients</label><textarea class="in" id="s-n" name="notes">${esc(s.notes)}</textarea></div>`, {
+    onSubmit: f=>{ if(!val(f,'titre')) return mErr('Donnez un nom au scénario.'); b.scenarios=b.scenarios||[]; const rec=s.id?s:{id:uid('s'),favori:false};
+      Object.assign(rec,{titre:val(f,'titre'),revenu:numv(f,'revenu')||0,cout:numv(f,'cout')||0,delai:val(f,'delai'),notes:val(f,'notes')}); if(!s.id) b.scenarios.push(rec); save(); return true; },
+    onDelete: s.id ? ()=>confirmBox(`Supprimer le scénario « ${esc(s.titre)} » ?`,'Supprimer',()=>{ b.scenarios=b.scenarios.filter(x=>x.id!==s.id); save(); }) : null
+  });
+}
+function planForm(bId){
+  const b=bien(bId); const p=b.plan||{titre:'',horizon:'',conditions:'',budget:'',etapes:[]};
+  openModal(b.plan?'Modifier le projet':'Préparer un projet', `
+    <div class="f"><label for="pl-t">Projet</label><input class="in" id="pl-t" name="titre" value="${esc(p.titre)}" placeholder="Ex. : Récupérer le logement pour la famille" required></div>
+    <div class="row2"><div class="f"><label for="pl-h">Échéance visée</label><input class="in" id="pl-h" name="horizon" value="${esc(p.horizon)}" placeholder="Ex. : Été 2027"></div><div class="f"><label for="pl-b">Budget estimé</label><div class="in-euro"><input class="in" id="pl-b" name="budget" inputmode="decimal" value="${p.budget||''}"></div></div></div>
+    <div class="f"><label for="pl-c">Conditions à réunir</label><textarea class="in" id="pl-c" name="conditions">${esc(p.conditions)}</textarea></div>`, {
+    onSubmit: f=>{ if(!val(f,'titre')) return mErr('Décrivez le projet en une phrase.'); b.plan=Object.assign(p,{titre:val(f,'titre'),horizon:val(f,'horizon'),budget:numv(f,'budget')||0,conditions:val(f,'conditions')}); save(); return true; },
+    onDelete: b.plan ? ()=>confirmBox('Supprimer ce projet et ses étapes ?','Supprimer',()=>{ delete b.plan; save(); }) : null
+  });
+}
+
+async function uploadFile(file){
+  if(SB){
+    const path=`${new Date().getFullYear()}/${uid('f')}-${file.name.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w.\-]+/g,'_')}`;
+    const {error}=await SB.storage.from('justificatifs').upload(path, file, {contentType:file.type||undefined});
+    if(error){ toast(/size|large/i.test(error.message)?'Fichier trop lourd pour être envoyé.':"Le fichier n'a pas pu être envoyé. L'entrée est gardée sans pièce jointe."); return {url:null}; }
+    return {url:'sb:'+path};
+  }
+  await caps.ready;
+  if(!caps.assets){ toast('Le fichier est noté, mais ne peut pas être stocké ici.'); return {url:null}; }
+  try{ const r=await caps.assets.upload(file); return {url:r.url}; }
+  catch(e){ toast(e&&e.code==='too_large'?'Fichier trop lourd (20 Mo maximum).':"Le fichier n'a pas pu être envoyé. L'entrée est gardée sans pièce jointe."); return {url:null}; }
+}
+let toastT;
+function toast(t){ let el=document.querySelector('.toast'); if(!el){ el=document.createElement('div'); el.className='toast'; el.setAttribute('role','status'); document.body.appendChild(el);} el.textContent=t; clearTimeout(toastT); toastT=setTimeout(()=>el.remove(),2800); }
+
+/* ---------- Événements ---------- */
+document.addEventListener('click', e=>{
+  const a=e.target.closest('[data-a]'); if(!a) return;
+  const k=a.dataset.a, id=a.dataset.id;
+  if(k==='close-bg'){ if(e.target===a) closeModal(); return; }
+  if(a.tagName==='A' && k!=='go-tab') return;
+  switch(k){
+    case 'close': closeModal(); break;
+    case 'm-del': window._mDel && window._mDel(); break;
+    case 'add-menu': addMenu(); break;
+    case 'new-op': closeModal(); opForm(a.dataset.type, null, {bien:a.dataset.bien, projet:a.dataset.projet, cat:a.dataset.cat}); break;
+    case 'edit-op': { const o=S.operations.find(o=>o.id===id); if(o) opForm(o.type,o); break; }
+    case 'pay': { const o=S.operations.find(o=>o.id===id); if(o){ o.statut='paye'; if(o.type==='revenu'&&o.date>TODAY) o.date=TODAY; save(); render(); toast(o.type==='revenu'?'Loyer marqué comme reçu':'Marqué comme payé'); } break; }
+    case 'rep-equal': repEqual(); break;
+    case 'new-bien': closeModal(); bienForm(); break;
+    case 'edit-bien': bienForm(bien(id)); break;
+    case 'bien-tab': UI.bienTab=a.dataset.tab; render(); break;
+    case 'go-tab': UI.bienTab=a.dataset.tab; UI.keepTab=true; if(location.hash===a.getAttribute('href')) render(); break;
+    case 'new-task': closeModal(); taskForm(); break;
+    case 'edit-task': taskForm(S.taches.find(t=>t.id===id)); break;
+    case 'toggle-task': { const t=S.taches.find(t=>t.id===id); if(t){ t.fait=!t.fait; save(); render(); if(t.fait) toast('Bravo, c\'est fait'); } break; }
+    case 'toggle-done': UI.showDone=!UI.showDone; render(); break;
+    case 'new-projet': closeModal(); projetForm(null,{bien:a.dataset.bien}); break;
+    case 'edit-projet': projetForm(S.projets.find(p=>p.id===id)); break;
+    case 'trav-filter': UI.travFilter=a.dataset.f; render(); break;
+    case 'toggle-action': { const p=S.projets.find(p=>p.id===id); const x=p.actions.find(x=>x.id===a.dataset.e); x.fait=!x.fait; save(); render(); break; }
+    case 'del-action': { const p=S.projets.find(p=>p.id===id); p.actions=p.actions.filter(x=>x.id!==a.dataset.e); save(); render(); break; }
+    case 'new-doc': closeModal(); docForm(null,{bien:a.dataset.bien, cat:a.dataset.cat}); break;
+    case 'edit-doc': docForm(S.documents.find(d=>d.id===id)); break;
+    case 'doc-filter': UI.docBien=a.dataset.f; render(); break;
+    case 'fin-tab': UI.finTab=a.dataset.tab; render(); break;
+    case 'new-pret': pretForm(); break;
+    case 'edit-pret': pretForm(S.prets.find(l=>l.id===id)); break;
+    case 'new-scen': scenForm(id); break;
+    case 'edit-scen': scenForm(id, bien(id).scenarios.find(s=>s.id===a.dataset.s)); break;
+    case 'fav-scen': { const b=bien(id); b.scenarios.forEach(s=>s.favori = s.id===a.dataset.s ? !s.favori : false); save(); render(); break; }
+    case 'edit-plan': planForm(id); break;
+    case 'toggle-etape': { const e2=bien(id).plan.etapes.find(x=>x.id===a.dataset.e); e2.fait=!e2.fait; save(); render(); break; }
+    case 'del-etape': { const pl=bien(id).plan; pl.etapes=pl.etapes.filter(x=>x.id!==a.dataset.e); save(); render(); break; }
+    case 'fisc-settings': fiscForm(UI.fiscYear||fiscYearDefault()); break;
+    case 'deduct': { const o=S.operations.find(o=>o.id===id); if(!o) break; const auto=DEDUCT_DEFAULT[o.categorie]??false; const cur=o.deductible==null?auto:o.deductible; o.deductible = (!cur)===auto ? null : !cur; save(); render(); break; }
+    case 'fisc-task': { const t=a.dataset.t, d=a.dataset.d; if(S.taches.some(x=>x.titre===t&&!x.fait)){ toast('Déjà dans « À faire »'); break; } S.taches.push({id:uid('t'),titre:t,echeance:d,priorite:'normale',bienId:'',type:'tache',fait:false}); save(); render(); toast('Ajouté à « À faire »'); break; }
+    case 'logout': (async()=>{ try{ await SB.auth.signOut(); }catch(e){} location.hash=''; location.reload(); })(); break;
+    case 'reload': location.reload(); break;
+    case 'reset': confirmBox("Effacer toutes les données d'exemple (opérations, tâches, projets, documents, scénarios) ? Vos biens restent pour que vous les complétiez.", "Tout effacer", ()=>{ S.operations=[]; S.taches=[]; S.projets=[]; S.documents=[]; S.biens.forEach(b=>{ delete b.scenarios; delete b.plan; b.historique=[]; }); ensureRents(); S.exemple=false; save(); toast('Carnet remis à zéro'); }); break;
+  }
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape' && document.getElementById('mform')) closeModal();
+  if((e.key==='Enter'||e.key===' ') && e.target.matches('.op[data-a]')){ e.preventDefault(); e.target.click(); }
+});
+document.addEventListener('submit', async e=>{
+  const f=e.target; e.preventDefault();
+  if(f.id==='login-form'){ return sbLogin(f); }
+  if(f.id==='mform'){ if(!modalSubmit) return; mErr(''); const ok=await modalSubmit(f); if(ok===true){ closeModal(); render(); } return; }
+  if(f.dataset.f==='add-etape'){ const t=f.elements.t.value.trim(); if(!t) return; const b=bien(f.dataset.id); b.plan.etapes.push({id:uid('e'),titre:t,fait:false}); save(); render(); document.getElementById('etape-'+b.id)?.focus(); }
+  if(f.dataset.f==='add-action'){ const t=f.elements.t.value.trim(); if(!t) return; const p=S.projets.find(p=>p.id===f.dataset.id); p.actions.push({id:uid('a'),titre:t,fait:false}); save(); render(); document.getElementById('act-'+p.id)?.focus(); }
+});
+document.addEventListener('change', async e=>{
+  const t=e.target;
+  if(t.dataset.ch){ UI[t.dataset.ch]=t.value; render(); return; }
+  if(t.dataset.in==='progression'){ const p=S.projets.find(p=>p.id===t.dataset.id); p.progression=Number(t.value); if(p.progression>0&&p.statut==='a_venir') p.statut='en_cours'; save(); render(); return; }
+  if(t.dataset.up==='photo'){ const file=t.files[0]; if(!file) return; const up=await uploadFile(file); if(up.url){ S.projets.find(p=>p.id===t.dataset.id).photos.push(up.url); save(); render(); toast('Photo ajoutée'); } return; }
+  if(t.closest('#mform')){
+    if(t.name==='statut' && t.closest('#mform').elements.locataire!==undefined){ const box=document.getElementById('b-loc'); if(box) box.hidden=t.value!=='loue'; }
+    if(t.name==='categorie'){ const tb=document.getElementById('teom-box'); if(tb) tb.hidden=t.value!=='Taxes'; }
+    if(t.name==='mode' || t.name==='rp'){ if(t.name==='rp' && t.checked){ const f=t.closest('form'); if(!f.elements['rpp-'+t.value].value) setTimeout(repEqual,0);} repUpdate(); }
+  }
+});
+document.addEventListener('input', e=>{
+  const t=e.target;
+  if(t.dataset.in==='docQ'){ UI.docQ=t.value; const q=t.value.trim().toLowerCase(); const f=UI.docBien; const list=S.documents.filter(d=>(f==='all'||(f==='commun'?!d.bienId:d.bienId===f))&&(!q||(d.nom+' '+d.categorie).toLowerCase().includes(q))); document.getElementById('doc-list').innerHTML=docList(list); return; }
+  if(t.dataset.in==='progression'){ const v=document.getElementById('progv'); if(v) v.textContent=t.value+' %'; return; }
+  if(t.closest('#mform') && (t.name==='montant' || t.name.startsWith('rpp-'))) repUpdate();
+});
+
+/* ---------- Démarrage ---------- */
+let booting=false;
+async function boot(){
+  if(booting) return; booting=true;
+  try{ const ok=await load(); if(ok!==false){ document.body.classList.remove('gated'); render(); } }
+  catch(e){ if(SB) showGate('error', String(e&&e.message||e)); else { S=seed(); ensureFiscal(); render(); } }
+  finally{ booting=false; }
+}
+if(SB) SB.auth.onAuthStateChange(ev=>{ if(ev==='SIGNED_IN' && !S) setTimeout(boot,0); });
+boot();
+</script>
