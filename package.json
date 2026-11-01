@@ -1,0 +1,14 @@
+{
+  "name": "maison-patrimoine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Carnet de patrimoine familial : biens, loyers, dépenses, travaux, fiscalité.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs && npx --yes serve@14.2.4 dist -l 3000"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.45.4"
+  },
+  "engines": { "node": ">=18" }
+}
